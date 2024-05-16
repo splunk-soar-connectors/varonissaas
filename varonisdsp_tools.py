@@ -89,6 +89,13 @@ def arg_to_datetime(interval: Any, is_utc=True) -> Optional[datetime]:
     raise ValueError('"{}" is not a valid date+'.format(interval))
 
 
+def numeric_to_date(interval: Any, is_utc=True) -> Optional[datetime]:
+    if isinstance(interval, str) and interval.isdigit():
+        return arg_to_datetime(f'{interval} day', is_utc)
+    
+    return arg_to_datetime(interval, is_utc)
+
+
 def multi_value_to_string_list(arg, separator=','):
     """
     Converts a string representation of args to a python list

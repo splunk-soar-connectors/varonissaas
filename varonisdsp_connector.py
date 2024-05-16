@@ -654,7 +654,7 @@ class VaronisDspSaasConnector(BaseConnector):
 
         try:
             container_count = param.get(phantom.APP_JSON_CONTAINER_COUNT, float('inf'))
-            start_time = tools.arg_to_datetime(ingest_period)
+            start_time = tools.numeric_to_date(ingest_period)
             artifact_count = param.get(phantom.APP_JSON_ARTIFACT_COUNT, VDSP_MAX_ALERTED_EVENTS)
 
             self.save_progress(f'Start ingesting data for interval from {start_time}, amount {container_count}')
