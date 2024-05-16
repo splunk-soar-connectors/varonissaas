@@ -92,7 +92,7 @@ def arg_to_datetime(interval: Any, is_utc=True) -> Optional[datetime]:
 def numeric_to_date(interval: Any, is_utc=True) -> Optional[datetime]:
     if isinstance(interval, str) and interval.isdigit():
         return arg_to_datetime(f'{interval} day', is_utc)
-    
+
     return arg_to_datetime(interval, is_utc)
 
 
