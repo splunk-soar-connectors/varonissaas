@@ -958,10 +958,6 @@
                 "input_file": "wheels/py3/importlib_resources-5.4.0-py3-none-any.whl"
             },
             {
-                "module": "ntlm_auth",
-                "input_file": "wheels/shared/ntlm_auth-1.5.0-py2.py3-none-any.whl"
-            },
-            {
                 "module": "pycparser",
                 "input_file": "wheels/shared/pycparser-2.21-py2.py3-none-any.whl"
             },
@@ -984,10 +980,6 @@
             {
                 "module": "requests",
                 "input_file": "wheels/shared/requests-2.25.1-py2.py3-none-any.whl"
-            },
-            {
-                "module": "requests_ntlm",
-                "input_file": "wheels/shared/requests_ntlm-1.1.0-py2.py3-none-any.whl"
             },
             {
                 "module": "six",
@@ -1046,10 +1038,6 @@
                 "input_file": "wheels/shared/idna-2.10-py2.py3-none-any.whl"
             },
             {
-                "module": "ntlm_auth",
-                "input_file": "wheels/shared/ntlm_auth-1.5.0-py2.py3-none-any.whl"
-            },
-            {
                 "module": "pycparser",
                 "input_file": "wheels/shared/pycparser-2.21-py2.py3-none-any.whl"
             },
@@ -1072,10 +1060,6 @@
             {
                 "module": "requests",
                 "input_file": "wheels/shared/requests-2.25.1-py2.py3-none-any.whl"
-            },
-            {
-                "module": "requests_ntlm",
-                "input_file": "wheels/shared/requests_ntlm-1.1.0-py2.py3-none-any.whl"
             },
             {
                 "module": "six",
