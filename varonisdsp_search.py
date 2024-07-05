@@ -20,7 +20,7 @@ ALERT_SEVERITIES = {'high': 0, 'medium': 1, 'low': 2}
 CLOSE_REASONS = {
     'none': 0,
     'other': 1,
-    'begin activity': 2,
+    'benign activity': 2,
     'true positive': 3,
     'environment misconfiguration': 4,
     'alert recently customized': 5,

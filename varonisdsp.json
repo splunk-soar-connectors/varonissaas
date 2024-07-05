@@ -504,7 +504,7 @@
                     "value_list": [
                         "none",
                         "other",
-                        "begin activity",
+                        "benign activity",
                         "true positive",
                         "environment misconfiguration",
                         "alert recently customized",
