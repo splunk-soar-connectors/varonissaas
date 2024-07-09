@@ -459,51 +459,58 @@ class SearchEventObjectMapper:
 
         mapped_items = []
         for obj in key_valued_objects:
-            mapped_items.append(self.map_item(obj))
+            mapped_items.extend(self.map_item(obj))
 
         return mapped_items
 
-    def map_item(self, row: Dict[str, Any]) -> EventItem:
-        event_item = EventItem()
+    def map_item(self, row: Dict[str, Any]) -> List[EventItem]:
+        alertIds = row.get(EventAttributes.EventAlertId)
+        alertIds = multi_value_to_string_list(alertIds)
 
-        event_item.AlertId = row.get(EventAttributes.EventAlertId)
-        event_item.ID = row.get(EventAttributes.EventGuid, '')
-        event_item.Type = row.get(EventAttributes.EventTypeName)
-        event_item.TimeUTC = try_convert(row.get(EventAttributes.EventTimeUtc),
-                                         lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S.%f%z')
-                                                .replace(tzinfo=timezone.utc))
-        event_item.Status = row.get(EventAttributes.EventStatusName)
-        event_item.Description = row.get(EventAttributes.EventDescription)
-        event_item.Country = row.get(EventAttributes.EventLocationCountryName)
-        event_item.State = row.get(EventAttributes.EventLocationSubdivisionName)
-        event_item.BlacklistedLocation = try_convert(row.get(EventAttributes.EventLocationBlacklistedLocation), lambda x: parse_bool(x))
-        event_item.EventOperation = row.get(EventAttributes.EventOperationName)
-        event_item.ByUserAccount = row.get(EventAttributes.EventByAccountIdentityName)
-        event_item.ByUserAccountType = row.get(EventAttributes.EventByAccountTypeName)
-        event_item.ByUserAccountDomain = row.get(EventAttributes.EventByAccountDomainName)
-        event_item.BySamAccountName = row.get(EventAttributes.EventByAccountSamAccountName)
-        event_item.Filer = row.get(EventAttributes.EventFilerName)
-        event_item.Platform = row.get(EventAttributes.EventFilerPlatformName)
-        event_item.SourceIP = row.get(EventAttributes.EventIp)
-        event_item.ExternalIP = row.get(EventAttributes.EventDeviceExternalIp)
-        event_item.DestinationIP = row.get(EventAttributes.EventDestinationIp)
-        event_item.SourceDevice = row.get(EventAttributes.EventDeviceName)
-        event_item.DestinationDevice = row.get(EventAttributes.EventDestinationDeviceName)
-        event_item.IsDisabledAccount = try_convert(row.get(EventAttributes.EventByAccountIsDisabled), lambda x: parse_bool(x))
-        event_item.IsLockoutAccount = try_convert(row.get(EventAttributes.EventByAccountIsLockout), lambda x: parse_bool(x))
-        event_item.IsStaleAccount = try_convert(row.get(EventAttributes.EventByAccountIsStale), lambda x: parse_bool(x))
-        event_item.IsMaliciousIP = try_convert(row.get(EventAttributes.EventDeviceExternalIpIsMalicious), lambda x: parse_bool(x))
-        event_item.ExternalIPThreatTypes = row.get(EventAttributes.EventDeviceExternalIpThreatTypesName, '')
-        event_item.ExternalIPReputation = row.get(EventAttributes.EventDeviceExternalIpReputationName)
-        event_item.OnObjectName = row.get(EventAttributes.EventOnObjectName)
-        event_item.OnObjectType = row.get(EventAttributes.EventOnResourceObjectTypeName)
-        event_item.OnSamAccountName = row.get(EventAttributes.EventOnAccountSamAccountName)
-        event_item.IsSensitive = try_convert(row.get(EventAttributes.EventOnResourceIsSensitive), lambda x: parse_bool(x))
-        event_item.OnAccountIsDisabled = try_convert(row.get(EventAttributes.EventOnAccountIsDisabled), lambda x: parse_bool(x))
-        event_item.OnAccountIsLockout = try_convert(row.get(EventAttributes.EventOnAccountIsLockout), lambda x: parse_bool(x))
-        event_item.Path = row.get(EventAttributes.EventOnResourcePath)
+        event_items = []
 
-        return event_item
+        for alertId in alertIds:
+            event_item = EventItem()
+
+            event_item.AlertId = alertId
+            event_item.ID = row.get(EventAttributes.EventGuid, '')
+            event_item.Type = row.get(EventAttributes.EventTypeName)
+            event_item.TimeUTC = try_convert(row.get(EventAttributes.EventTimeUtc),
+                                            lambda x: datetime.strptime(x, '%Y-%m-%dT%H:%M:%S.%f%z')
+                                                    .replace(tzinfo=timezone.utc))
+            event_item.Status = row.get(EventAttributes.EventStatusName)
+            event_item.Description = row.get(EventAttributes.EventDescription)
+            event_item.Country = row.get(EventAttributes.EventLocationCountryName)
+            event_item.State = row.get(EventAttributes.EventLocationSubdivisionName)
+            event_item.BlacklistedLocation = try_convert(row.get(EventAttributes.EventLocationBlacklistedLocation), lambda x: parse_bool(x))
+            event_item.EventOperation = row.get(EventAttributes.EventOperationName)
+            event_item.ByUserAccount = row.get(EventAttributes.EventByAccountIdentityName)
+            event_item.ByUserAccountType = row.get(EventAttributes.EventByAccountTypeName)
+            event_item.ByUserAccountDomain = row.get(EventAttributes.EventByAccountDomainName)
+            event_item.BySamAccountName = row.get(EventAttributes.EventByAccountSamAccountName)
+            event_item.Filer = row.get(EventAttributes.EventFilerName)
+            event_item.Platform = row.get(EventAttributes.EventFilerPlatformName)
+            event_item.SourceIP = row.get(EventAttributes.EventIp)
+            event_item.ExternalIP = row.get(EventAttributes.EventDeviceExternalIp)
+            event_item.DestinationIP = row.get(EventAttributes.EventDestinationIp)
+            event_item.SourceDevice = row.get(EventAttributes.EventDeviceName)
+            event_item.DestinationDevice = row.get(EventAttributes.EventDestinationDeviceName)
+            event_item.IsDisabledAccount = try_convert(row.get(EventAttributes.EventByAccountIsDisabled), lambda x: parse_bool(x))
+            event_item.IsLockoutAccount = try_convert(row.get(EventAttributes.EventByAccountIsLockout), lambda x: parse_bool(x))
+            event_item.IsStaleAccount = try_convert(row.get(EventAttributes.EventByAccountIsStale), lambda x: parse_bool(x))
+            event_item.IsMaliciousIP = try_convert(row.get(EventAttributes.EventDeviceExternalIpIsMalicious), lambda x: parse_bool(x))
+            event_item.ExternalIPThreatTypes = row.get(EventAttributes.EventDeviceExternalIpThreatTypesName, '')
+            event_item.ExternalIPReputation = row.get(EventAttributes.EventDeviceExternalIpReputationName)
+            event_item.OnObjectName = row.get(EventAttributes.EventOnObjectName)
+            event_item.OnObjectType = row.get(EventAttributes.EventOnResourceObjectTypeName)
+            event_item.OnSamAccountName = row.get(EventAttributes.EventOnAccountSamAccountName)
+            event_item.IsSensitive = try_convert(row.get(EventAttributes.EventOnResourceIsSensitive), lambda x: parse_bool(x))
+            event_item.OnAccountIsDisabled = try_convert(row.get(EventAttributes.EventOnAccountIsDisabled), lambda x: parse_bool(x))
+            event_item.OnAccountIsLockout = try_convert(row.get(EventAttributes.EventOnAccountIsLockout), lambda x: parse_bool(x))
+            event_item.Path = row.get(EventAttributes.EventOnResourcePath)
+            event_items.append(event_item)
+
+        return event_items
 
 
 class ThreatModelObjectMapper:

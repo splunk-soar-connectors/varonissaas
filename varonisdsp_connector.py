@@ -672,7 +672,6 @@ class VaronisDspSaasConnector(BaseConnector):
                     descending_order=False
                 )
 
-                self.debug_print('Params completed', json.dumps(alert_payload.to_dict()))
                 self.save_progress(f'Start ingesting data from {last_fetched_time}')
                 ret_val, alert_results = self._make_search_call(
                     action_result,
@@ -694,24 +693,28 @@ class VaronisDspSaasConnector(BaseConnector):
                 containers = list()
                 alert_results = SearchAlertObjectMapper().map(alert_results)
                 dict_events = None
+                event_items = []
 
                 if is_ingest_artifacts:
                     alert_ids = list(map(lambda x: x.ID, alert_results))
-                    event_payload = self._get_alerted_events_payload(alert_ids, descending_order=False)
+                    batch_size = 20
 
-                    ret_val, event_results = self._make_search_call(
-                        action_result,
-                        query=event_payload,
-                        count=artifact_count * max_alerts
-                    )
+                    for batch_alert_ids in tools.batched(alert_ids, batch_size):
+                        event_payload = self._get_alerted_events_payload(batch_alert_ids, descending_order=False)
 
-                    if phantom.is_fail(ret_val):
-                        self.save_progress('On poll Failed while getting alerted events.')
-                        return action_result.get_status()
+                        ret_val, event_result = self._make_search_call(
+                            action_result,
+                            query=event_payload,
+                            count=artifact_count * batch_size
+                        )
 
-                    event_results = SearchEventObjectMapper().map(event_results)
+                        if phantom.is_fail(ret_val):
+                            self.save_progress('On poll Failed while getting alerted events.')
+                            return action_result.get_status()
 
-                    dict_events = tools.group_by(event_results, key_func=lambda x: x.AlertId)
+                        event_items.extend(SearchEventObjectMapper().map(event_result))
+
+                    dict_events = tools.group_by(event_items, key_func=lambda x: x.AlertId)
 
                 for alert_res in alert_results:
                     ingest_time = alert_res.IngestTime

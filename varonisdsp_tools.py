@@ -1,6 +1,6 @@
 from collections import deque
 from datetime import datetime, timezone
-from itertools import groupby
+from itertools import groupby, islice
 from typing import Any, Dict, List, Optional
 
 import dateparser
@@ -228,3 +228,11 @@ def group_by(data: List[Any], key_func: Any) -> Dict[str, List[Any]]:
     for k, g in grouping:
         result[k] = list(g)
     return result
+
+
+def batched(iterable, n):
+    if n < 1:
+        return []
+    it = iter(iterable)
+    while (batch := list(islice(it, n))):
+        yield batch
