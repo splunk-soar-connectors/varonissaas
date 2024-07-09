@@ -697,7 +697,7 @@ class VaronisDspSaasConnector(BaseConnector):
 
                 if is_ingest_artifacts:
                     alert_ids = list(map(lambda x: x.ID, alert_results))
-                    batch_size = 20
+                    batch_size = VDSP_MAX_ALERTS
 
                     for batch_alert_ids in tools.batched(alert_ids, batch_size):
                         event_payload = self._get_alerted_events_payload(batch_alert_ids, descending_order=False)
