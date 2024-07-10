@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional, TypeVar
 
-from varonisdsp_consts import VDSP_MAX_DAYS_BACK
-from varonisdsp_tools import *
+from varonissaas_consts import VDSP_MAX_DAYS_BACK
+from varonissaas_tools import *
 
 TFilter = TypeVar('TFilter', bound='Filter')
 TFilterGroup = TypeVar('TFilterGroup', bound='FilterGroup')

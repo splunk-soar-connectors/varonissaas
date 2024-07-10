@@ -1,4 +1,4 @@
-# File: varonisdsp_connector.py
+# File: varonissaas_connector.py
 #
 # Copyright (c) Varonis, 2023
 #
@@ -38,9 +38,9 @@ from requests.adapters import HTTPAdapter
 from requests.models import Response
 from urllib3 import Retry
 
-import varonisdsp_tools as tools
-from varonisdsp_consts import *
-from varonisdsp_search import (ALERT_SEVERITIES, ALERT_STATUSES, CLOSE_REASONS, AlertItem, EventItem, SearchAlertObjectMapper,
+import varonissaas_tools as tools
+from varonissaas_consts import *
+from varonissaas_search import (ALERT_SEVERITIES, ALERT_STATUSES, CLOSE_REASONS, AlertItem, EventItem, SearchAlertObjectMapper,
                                SearchEventObjectMapper, SearchRequest, create_alert_request, create_alerted_events_request, get_query_range)
 
 REQUEST_RETRIES = 30
@@ -53,12 +53,12 @@ class RetVal(tuple):
         return tuple.__new__(RetVal, (val1, val2))
 
 
-class VaronisDspSaasConnector(BaseConnector):
+class VaronisSaasConnector(BaseConnector):
 
     def __init__(self):
 
         # Call the BaseConnectors init first
-        super(VaronisDspSaasConnector, self).__init__()
+        super(VaronisSaasConnector, self).__init__()
 
         self._state: Dict[str, Any] = None
         self._session = None
@@ -863,7 +863,7 @@ def main():
 
     if username and password:
         try:
-            login_url = VaronisDspSaasConnector._get_phantom_base_url() + '/login'
+            login_url = VaronisSaasConnector._get_phantom_base_url() + '/login'
 
             print('Accessing the Login page')
             r = requests.get(login_url, verify=verify, timeout=VDSP_DEFAULT_TIMEOUT)
@@ -895,7 +895,7 @@ def main():
         in_json = json.loads(in_json)
         print(json.dumps(in_json, indent=4))
 
-        connector = VaronisDspSaasConnector()
+        connector = VaronisSaasConnector()
         connector.print_progress_message = True
 
         if session_id is not None:

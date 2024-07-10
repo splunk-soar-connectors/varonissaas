@@ -1,4 +1,4 @@
-# File: varonisdsp_consts.py
+# File: varonissaas_consts.py
 #
 # Copyright (c) Varonis, 2023
 #

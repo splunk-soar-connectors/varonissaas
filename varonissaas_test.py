@@ -4,14 +4,14 @@ from unittest.mock import MagicMock
 
 from phantom.action_result import ActionResult
 
-from varonisdsp_connector import VaronisDspSaasConnector
-from varonisdsp_consts import *
-from varonisdsp_search import ALERT_STATUSES, CLOSE_REASONS
+from varonissaas_connector import VaronisSaasConnector
+from varonissaas_consts import *
+from varonissaas_search import ALERT_STATUSES, CLOSE_REASONS
 
 
-class VaronisDSPTest(unittest.TestCase):
+class VaronisSaaSTest(unittest.TestCase):
     def setUp(self) -> None:
-        self.connector = VaronisDspSaasConnector()
+        self.connector = VaronisSaasConnector()
         self.connector._base_url = 'https://test.com'
 
     def test_handle_get_alerts_empty_param(self):
