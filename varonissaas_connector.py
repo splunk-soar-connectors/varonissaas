@@ -41,7 +41,7 @@ from urllib3 import Retry
 import varonissaas_tools as tools
 from varonissaas_consts import *
 from varonissaas_search import (ALERT_SEVERITIES, ALERT_STATUSES, CLOSE_REASONS, AlertItem, EventItem, SearchAlertObjectMapper,
-                               SearchEventObjectMapper, SearchRequest, create_alert_request, create_alerted_events_request, get_query_range)
+                                SearchEventObjectMapper, SearchRequest, create_alert_request, create_alerted_events_request, get_query_range)
 
 REQUEST_RETRIES = 30
 HTTP_STATUS_WHITE_LIST = [ 304, 206 ]
