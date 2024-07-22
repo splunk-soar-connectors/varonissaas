@@ -49,10 +49,10 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions  
 [test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration  
-[get alerts](#action-get-alerts) - Get alerts from Varonis DA  
+[get alerts](#action-get-alerts) - Get alerts from Varonis SaaS  
 [update alert status](#action-update-alert-status) - Update Varonis alert status command  
 [close alert](#action-close-alert) - Close Varonis alert command  
-[get alerted events](#action-get-alerted-events) - Get alerted events from Varonis DA  
+[get alerted events](#action-get-alerted-events) - Get alerted events from Varonis SaaS  
 [on poll](#action-on-poll) - Callback action for the on_poll ingest functionality  
 
 ## action: 'test connectivity'
@@ -68,7 +68,7 @@ No parameters are required for this action
 No Output  
 
 ## action: 'get alerts'
-Get alerts from Varonis DA
+Get alerts from Varonis SaaS
 
 Type: **investigate**  
 Read only: **True**
@@ -182,7 +182,7 @@ summary.total_objects | numeric |  |
 summary.total_objects_successful | numeric |  |    
 
 ## action: 'get alerted events'
-Get alerted events from Varonis DA
+Get alerted events from Varonis SaaS
 
 Type: **investigate**  
 Read only: **True**
