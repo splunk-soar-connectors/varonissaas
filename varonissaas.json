@@ -29,13 +29,13 @@
             "description": "Should artifacts be ingested?",
             "data_type": "boolean",
             "required": true,
-            "order": 3
+            "order": 2
         },
         "api_key": {
             "description": "Varonis API Key",
             "data_type": "password",
             "required": true,
-            "order": 2
+            "order": 3
         },
         "ingest_period": {
             "description": "Alert Retrieval Start (Days Ago)",
