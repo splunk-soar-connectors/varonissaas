@@ -86,7 +86,7 @@
         {
             "action": "get alerts",
             "identifier": "get_alerts",
-            "description": "Get alerts from Varonis DA",
+            "description": "Get alerts from Varonis SaaS",
             "type": "investigate",
             "read_only": true,
             "parameters": {
@@ -579,7 +579,7 @@
         {
             "action": "get alerted events",
             "identifier": "get_alerted_events",
-            "description": "Get alerted events from Varonis DA",
+            "description": "Get alerted events from Varonis SaaS",
             "type": "investigate",
             "read_only": true,
             "parameters": {
