@@ -4,7 +4,7 @@
 Publisher: Varonis  
 Connector Version: 1.0.1  
 Product Vendor: Varonis  
-Product Name: Data Security Platform  
+Product Name: Varonis SaaS  
 Product Version Supported (regex): ".\*"  
 Minimum Product Version: 5.3.0  
 
@@ -35,7 +35,7 @@ Varonis SaaS for Splunk SOAR
 
 
 ### Configuration Variables
-The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a Data Security Platform asset in SOAR.
+The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a Varonis SaaS asset in SOAR.
 
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
