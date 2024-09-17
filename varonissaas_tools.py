@@ -43,7 +43,6 @@ def urljoin(url, suffix):
 
 
 def arg_to_datetime(interval: Any, is_utc=True) -> Optional[datetime]:
-
     """Converts an interval to a datetime
 
     :type interval: ``Any``
@@ -62,7 +61,9 @@ def arg_to_datetime(interval: Any, is_utc=True) -> Optional[datetime]:
     if interval is None:
         return None
 
-    if isinstance(interval, str) and interval.isdigit() or isinstance(interval, (int, float)):
+    if (isinstance(interval, str) and interval.isdigit()) or isinstance(
+        interval, (int, float)
+    ):
         # timestamp is a str containing digits - we just convert it to int
         ms = float(interval)
         if ms > 2000000000.0:
@@ -78,7 +79,7 @@ def arg_to_datetime(interval: Any, is_utc=True) -> Optional[datetime]:
         # relative time stamps.
         # For example: format 2019-10-23T00:00:00 or "3 days", etc
 
-        date = dateparser.parse(interval, settings={'TIMEZONE': 'UTC'})
+        date = dateparser.parse(interval, settings={"TIMEZONE": "UTC"})
 
         if date is None:
             # if d is None it means dateparser failed to parse it
@@ -91,12 +92,12 @@ def arg_to_datetime(interval: Any, is_utc=True) -> Optional[datetime]:
 
 def numeric_to_date(interval: Any, is_utc=True) -> Optional[datetime]:
     if isinstance(interval, str) and interval.isdigit():
-        return arg_to_datetime(f'{interval} day', is_utc)
+        return arg_to_datetime(f"{interval} day", is_utc)
 
     return arg_to_datetime(interval, is_utc)
 
 
-def multi_value_to_string_list(arg, separator=','):
+def multi_value_to_string_list(arg, separator=","):
     """
     Converts a string representation of args to a python list
 
@@ -130,25 +131,25 @@ def strEqual(text1: str, text2: str) -> bool:
 def parse_bool(value: str) -> Optional[bool]:
     if value:
         value = value.lower()
-        if value == 'yes':
+        if value == "yes":
             return True
-        if value == 'no':
+        if value == "no":
             return False
-        if value == 'true':
+        if value == "true":
             return True
-        if value == 'false':
+        if value == "false":
             return False
-        if value == '1':
+        if value == "1":
             return True
-        if value == '0':
+        if value == "0":
             return False
     return None
 
 
 def parse_bool_list(value: str) -> str:
     if value:
-        parsed = [str(parse_bool(x.strip())) for x in value.split(sep=',')]
-        return ','.join(parsed)
+        parsed = [str(parse_bool(x.strip())) for x in value.split(sep=",")]
+        return ",".join(parsed)
     return None
 
 
@@ -191,7 +192,7 @@ def object_to_dict(obj):
                 if isliteral(val):
                     constructed_obj.append(val)
                 elif isinstance(val, datetime):
-                    constructed_obj.append(val.strftime('%Y-%m-%dT%H:%M:%S.%f%z'))
+                    constructed_obj.append(val.strftime("%Y-%m-%dT%H:%M:%S.%f%z"))
                 else:
                     new_obj = new_construct(val)
                     queue.append((id(val), val, new_obj))
@@ -201,7 +202,7 @@ def object_to_dict(obj):
                 if isliteral(val):
                     constructed_obj[key] = val
                 elif isinstance(val, datetime):
-                    constructed_obj[key] = val.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+                    constructed_obj[key] = val.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
                 else:
                     new_obj = new_construct(val)
                     constructed_obj[key] = new_obj
@@ -234,5 +235,5 @@ def batched(iterable, n):
     if n < 1:
         return []
     it = iter(iterable)
-    while (batch := list(islice(it, n))):
+    while batch := list(islice(it, n)):
         yield batch
