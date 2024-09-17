@@ -139,18 +139,18 @@
                         "user name"
                     ],
                     "primary": true,
-                    "order": 9
+                    "order": 8
                 },
                 "last_days": {
                     "description": "Number of days you want the search to go back to",
                     "data_type": "numeric",
-                    "order": 12
+                    "order": 9
                 },
                 "descending_order": {
                     "description": "Indicates whether alerts should be ordered in newest to oldest order",
                     "data_type": "boolean",
                     "default": true,
-                    "order": 13
+                    "order": 10
                 }
             },
             "output": [
