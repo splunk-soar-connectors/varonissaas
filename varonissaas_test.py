@@ -16,11 +16,11 @@ class VaronisSaaSTest(unittest.TestCase):
 
     def test_handle_get_alerts_empty_param(self):
         # Arrange
-        with open("test_data/get_alerts_empty_param_query.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_empty_param_query.json", "r") as file:
             expected_search_query = json.load(file)
-        with open("test_data/get_alerts_empty_param_response.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_empty_param_response.json", "r") as file:
             search_response = json.load(file)
-        with open("test_data/get_alerts_empty_param_result.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_empty_param_result.json", "r") as file:
             expected_result = json.load(file)
 
         self.connector._make_search_call = MagicMock(return_value=(True, search_response))
@@ -43,11 +43,11 @@ class VaronisSaaSTest(unittest.TestCase):
 
     def test_handle_get_alerts(self):
         # Arrange
-        with open("test_data/get_alerts_query.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_query.json", "r") as file:
             expected_search_query = json.load(file)
-        with open("test_data/get_alerts_response.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_response.json", "r") as file:
             search_response = json.load(file)
-        with open("test_data/get_alerts_result.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_result.json", "r") as file:
             expected_result = json.load(file)
 
         self.connector._make_search_call = MagicMock(return_value=(True, search_response))
@@ -83,11 +83,11 @@ class VaronisSaaSTest(unittest.TestCase):
         self.connector.add_action_result = MagicMock(return_value=action_result)
 
     def test_handle_get_alerted_events(self):
-        with open("test_data/get_alerted_events_query.json", "r") as file:
+        with open("test_data/get_varonissaas_alerted_events_query.json", "r") as file:
             expected_search_query = json.load(file)
-        with open("test_data/get_alerted_events_response.json", "r") as file:
+        with open("test_data/get_varonissaas_alerted_events_response.json", "r") as file:
             search_response = json.load(file)
-        with open("test_data/get_alerted_events_result.json", "r") as file:
+        with open("test_data/get_varonissaas_alerted_events_result.json", "r") as file:
             expected_result = json.load(file)
 
         self.connector._make_search_call = MagicMock(return_value=(True, search_response))
