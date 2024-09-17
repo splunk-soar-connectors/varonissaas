@@ -110,6 +110,31 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 #### Action Output
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
+action_result.data.\*.ID | string |  `varonis alert id`  |  
+action_result.data.\*.Name | string |  |  
+action_result.data.\*.Time | string |  |   2022-11-11T19:35:00 
+action_result.data.\*.Severity | string |  |   High 
+action_result.data.\*.Category | string |  |  
+action_result.data.\*.Country | string |  |  
+action_result.data.\*.State | string |  |  
+action_result.data.\*.Status | string |  |   Open 
+action_result.data.\*.CloseReason | string |  |  
+action_result.data.\*.BlacklistLocation | boolean |  |  
+action_result.data.\*.AbnormalLocation | string |  |  
+action_result.data.\*.NumOfAlertedEvents | numeric |  |  
+action_result.data.\*.UserName | string |  `user name`  |  
+action_result.data.\*.EventUTC | string |  |  
+action_result.data.\*.SamAccountName | string |  |  
+action_result.data.\*.PrivilegedAccountType | string |  |  
+action_result.data.\*.EventUTC | string |  |   2022-11-11T19:35:00 
+action_result.data.\*.DeviceName | string |  |  
+action_result.data.\*.ContainMaliciousExternalIP | string |  |  
+action_result.data.\*.IPThreatTypes | string |  |  
+action_result.data.\*.AssetContainsFlaggedData | string |  |  
+action_result.data.\*.AssetContainsSensitiveData | string |  |  
+action_result.data.\*.Platform | string |  |   DNS 
+action_result.data.\*.Asset | string |  |   DNS 
+action_result.data.\*.FileServerOrDomain | string |  |   DNS 
 action_result.status | string |  |   success  failed 
 action_result.parameter.alert_severity | string |  |  
 action_result.parameter.alert_status | string |  |  
@@ -122,31 +147,6 @@ action_result.parameter.page | numeric |  |
 action_result.parameter.start_time | string |  |  
 action_result.parameter.threat_model_name | string |  |  
 action_result.parameter.user_name | string |  `user name`  |  
-action_result.data.\*.AbnormalLocation | string |  |  
-action_result.data.\*.BlacklistLocation | boolean |  |  
-action_result.data.\*.PrivilegedAccountType | string |  |  
-action_result.data.\*.SamAccountName | string |  |  
-action_result.data.\*.Category | string |  |  
-action_result.data.\*.CloseReason | string |  |  
-action_result.data.\*.Country | string |  |  
-action_result.data.\*.ContainMaliciousExternalIP | string |  |  
-action_result.data.\*.IPThreatTypes | string |  |  
-action_result.data.\*.DeviceName | string |  |  
-action_result.data.\*.EventUTC | string |  |  
-action_result.data.\*.ID | string |  `varonis alert id`  |  
-action_result.data.\*.Name | string |  |  
-action_result.data.\*.NumOfAlertedEvents | numeric |  |  
-action_result.data.\*.Asset | string |  |   DNS 
-action_result.data.\*.AssetContainsFlaggedData | string |  |  
-action_result.data.\*.AssetContainsSensitiveData | string |  |  
-action_result.data.\*.FileServerOrDomain | string |  |   DNS 
-action_result.data.\*.Platform | string |  |   DNS 
-action_result.data.\*.Severity | string |  |   High 
-action_result.data.\*.State | string |  |  
-action_result.data.\*.Status | string |  |   Open 
-action_result.data.\*.Time | string |  |   2022-11-11T19:35:00 
-action_result.data.\*.EventUTC | string |  |   2022-11-11T19:35:00 
-action_result.data.\*.UserName | string |  `user name`  |  
 action_result.summary | string |  |  
 action_result.message | string |  |  
 summary.total_objects | numeric |  |  
