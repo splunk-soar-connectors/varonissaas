@@ -11,13 +11,9 @@ TQuery = TypeVar("TQuery", bound="Query")
 TRows = TypeVar("TRows", bound="Rows")
 TRequestParams = TypeVar("TRequestParams", bound="RequestParams")
 TSearchRequest = TypeVar("TSearchRequest", bound="SearchRequest")
-TAlertSearchQueryBuilder = TypeVar(
-    "TAlertSearchQueryBuilder", bound="AlertSearchQueryBuilder"
-)
+TAlertSearchQueryBuilder = TypeVar("TAlertSearchQueryBuilder", bound="AlertSearchQueryBuilder")
 TSearchRequestBuilder = TypeVar("TSearchRequestBuilder", bound="SearchRequestBuilder")
-TEventSearchQueryBuilder = TypeVar(
-    "TEventSearchQueryBuilder", bound="EventSearchQueryBuilder"
-)
+TEventSearchQueryBuilder = TypeVar("TEventSearchQueryBuilder", bound="EventSearchQueryBuilder")
 
 ALERT_STATUSES = {
     "new": 1,
@@ -96,9 +92,7 @@ class FilterGroup:
         self.filterOperator = None
         self.filters = []
 
-    def set_filter_operator(
-        self: TFilterGroup, filter_operator: FilterOperator
-    ) -> TFilterGroup:
+    def set_filter_operator(self: TFilterGroup, filter_operator: FilterOperator) -> TFilterGroup:
         self.filterOperator = filter_operator.value
         return self
 
@@ -159,9 +153,7 @@ class RequestParams:
         self.searchSource = search_source
         return self
 
-    def set_search_source_name(
-        self: TRequestParams, search_source_name: str
-    ) -> TRequestParams:
+    def set_search_source_name(self: TRequestParams, search_source_name: str) -> TRequestParams:
         self.searchSourceName = search_source_name
         return self
 
@@ -183,9 +175,7 @@ class SearchRequest:
         self.rows = rows
         return self
 
-    def set_request_params(
-        self: TSearchRequest, request_params: RequestParams
-    ) -> TSearchRequest:
+    def set_request_params(self: TSearchRequest, request_params: RequestParams) -> TSearchRequest:
         self.requestParams = request_params
         return self
 
@@ -479,24 +469,16 @@ class SearchAlertObjectMapper:
         alert_item.Name = row[AlertAttributes.RuleName]
         alert_item.Time = row[AlertAttributes.Time]
         alert_item.Severity = row[AlertAttributes.RuleSeverityName]
-        alert_item.SeverityId = try_convert(
-            row[AlertAttributes.RuleSeverityId], lambda x: int(x)
-        )
+        alert_item.SeverityId = try_convert(row[AlertAttributes.RuleSeverityId], lambda x: int(x))
         alert_item.Category = row[AlertAttributes.RuleCategoryName]
         alert_item.Country = row[AlertAttributes.LocationCountryName]
         alert_item.State = row[AlertAttributes.LocationSubdivisionName]
         alert_item.Status = row[AlertAttributes.StatusName]
-        alert_item.StatusId = try_convert(
-            row[AlertAttributes.StatusId], lambda x: int(x)
-        )
+        alert_item.StatusId = try_convert(row[AlertAttributes.StatusId], lambda x: int(x))
         alert_item.CloseReason = row[AlertAttributes.CloseReasonName]
-        alert_item.BlacklistLocation = row.get(
-            AlertAttributes.LocationBlacklistedLocation
-        )
+        alert_item.BlacklistLocation = row.get(AlertAttributes.LocationBlacklistedLocation)
         alert_item.AbnormalLocation = row[AlertAttributes.LocationAbnormalLocation]
-        alert_item.NumOfAlertedEvents = try_convert(
-            row[AlertAttributes.EventsCount], lambda x: int(x)
-        )
+        alert_item.NumOfAlertedEvents = try_convert(row[AlertAttributes.EventsCount], lambda x: int(x))
         alert_item.UserName = row[AlertAttributes.UserName]
         alert_item.SamAccountName = row[AlertAttributes.UserSamAccountName]
         alert_item.PrivilegedAccountType = row[AlertAttributes.UserAccountTypeName]
@@ -506,26 +488,18 @@ class SearchAlertObjectMapper:
         )
         alert_item.IPThreatTypes = row[AlertAttributes.DeviceExternalIpThreatTypesName]
         alert_item.Asset = row[AlertAttributes.AssetPath]
-        alert_item.AssetContainsFlaggedData = try_convert(
-            row[AlertAttributes.DataIsFlagged], lambda x: parse_bool_list(x)
-        )
-        alert_item.AssetContainsSensitiveData = try_convert(
-            row[AlertAttributes.DataIsSensitive], lambda x: parse_bool_list(x)
-        )
+        alert_item.AssetContainsFlaggedData = try_convert(row[AlertAttributes.DataIsFlagged], lambda x: parse_bool_list(x))
+        alert_item.AssetContainsSensitiveData = try_convert(row[AlertAttributes.DataIsSensitive], lambda x: parse_bool_list(x))
         alert_item.Platform = row[AlertAttributes.FilerPlatformName]
         alert_item.FileServerOrDomain = row[AlertAttributes.FilerName]
         alert_item.DeviceName = row[AlertAttributes.DeviceHostname]
         alert_item.IngestTime = try_convert(
             row.get(AlertAttributes.IngestTime),
-            lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S").replace(
-                tzinfo=timezone.utc
-            ),
+            lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc),
         )
         alert_item.EventUTC = try_convert(
             row.get(AlertAttributes.InitialEventUtcTime),
-            lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S").replace(
-                tzinfo=timezone.utc
-            ),
+            lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc),
         )
 
         return alert_item
@@ -556,9 +530,7 @@ class SearchEventObjectMapper:
             event_item.Type = row.get(EventAttributes.EventTypeName)
             event_item.TimeUTC = try_convert(
                 row.get(EventAttributes.EventTimeUtc),
-                lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%f%z").replace(
-                    tzinfo=timezone.utc
-                ),
+                lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%f%z").replace(tzinfo=timezone.utc),
             )
             event_item.Status = row.get(EventAttributes.EventStatusName)
             event_item.Description = row.get(EventAttributes.EventDescription)
@@ -569,27 +541,17 @@ class SearchEventObjectMapper:
                 lambda x: parse_bool(x),
             )
             event_item.EventOperation = row.get(EventAttributes.EventOperationName)
-            event_item.ByUserAccount = row.get(
-                EventAttributes.EventByAccountIdentityName
-            )
-            event_item.ByUserAccountType = row.get(
-                EventAttributes.EventByAccountTypeName
-            )
-            event_item.ByUserAccountDomain = row.get(
-                EventAttributes.EventByAccountDomainName
-            )
-            event_item.BySamAccountName = row.get(
-                EventAttributes.EventByAccountSamAccountName
-            )
+            event_item.ByUserAccount = row.get(EventAttributes.EventByAccountIdentityName)
+            event_item.ByUserAccountType = row.get(EventAttributes.EventByAccountTypeName)
+            event_item.ByUserAccountDomain = row.get(EventAttributes.EventByAccountDomainName)
+            event_item.BySamAccountName = row.get(EventAttributes.EventByAccountSamAccountName)
             event_item.Filer = row.get(EventAttributes.EventFilerName)
             event_item.Platform = row.get(EventAttributes.EventFilerPlatformName)
             event_item.SourceIP = row.get(EventAttributes.EventIp)
             event_item.ExternalIP = row.get(EventAttributes.EventDeviceExternalIp)
             event_item.DestinationIP = row.get(EventAttributes.EventDestinationIp)
             event_item.SourceDevice = row.get(EventAttributes.EventDeviceName)
-            event_item.DestinationDevice = row.get(
-                EventAttributes.EventDestinationDeviceName
-            )
+            event_item.DestinationDevice = row.get(EventAttributes.EventDestinationDeviceName)
             event_item.IsDisabledAccount = try_convert(
                 row.get(EventAttributes.EventByAccountIsDisabled),
                 lambda x: parse_bool(x),
@@ -598,26 +560,16 @@ class SearchEventObjectMapper:
                 row.get(EventAttributes.EventByAccountIsLockout),
                 lambda x: parse_bool(x),
             )
-            event_item.IsStaleAccount = try_convert(
-                row.get(EventAttributes.EventByAccountIsStale), lambda x: parse_bool(x)
-            )
+            event_item.IsStaleAccount = try_convert(row.get(EventAttributes.EventByAccountIsStale), lambda x: parse_bool(x))
             event_item.IsMaliciousIP = try_convert(
                 row.get(EventAttributes.EventDeviceExternalIpIsMalicious),
                 lambda x: parse_bool(x),
             )
-            event_item.ExternalIPThreatTypes = row.get(
-                EventAttributes.EventDeviceExternalIpThreatTypesName, ""
-            )
-            event_item.ExternalIPReputation = row.get(
-                EventAttributes.EventDeviceExternalIpReputationName
-            )
+            event_item.ExternalIPThreatTypes = row.get(EventAttributes.EventDeviceExternalIpThreatTypesName, "")
+            event_item.ExternalIPReputation = row.get(EventAttributes.EventDeviceExternalIpReputationName)
             event_item.OnObjectName = row.get(EventAttributes.EventOnObjectName)
-            event_item.OnObjectType = row.get(
-                EventAttributes.EventOnResourceObjectTypeName
-            )
-            event_item.OnSamAccountName = row.get(
-                EventAttributes.EventOnAccountSamAccountName
-            )
+            event_item.OnObjectType = row.get(EventAttributes.EventOnResourceObjectTypeName)
+            event_item.OnSamAccountName = row.get(EventAttributes.EventOnAccountSamAccountName)
             event_item.IsSensitive = try_convert(
                 row.get(EventAttributes.EventOnResourceIsSensitive),
                 lambda x: parse_bool(x),
@@ -659,21 +611,11 @@ class ThreatModelObjectMapper:
 
 class AlertSearchQueryBuilder:
     def __init__(self):
-        self.search_query = (
-            Query()
-            .set_entity_name("Alert")
-            .set_filter(FilterGroup().set_filter_operator(FilterOperator.And))
-        )
+        self.search_query = Query().set_entity_name("Alert").set_filter(FilterGroup().set_filter_operator(FilterOperator.And))
 
-    def with_severities(
-        self: TAlertSearchQueryBuilder, severities: List[str]
-    ) -> TAlertSearchQueryBuilder:
+    def with_severities(self: TAlertSearchQueryBuilder, severities: List[str]) -> TAlertSearchQueryBuilder:
         if severities:
-            severity_condition = (
-                Filter()
-                .set_path(AlertAttributes.RuleSeverityId)
-                .set_operator(EmOperator.In)
-            )
+            severity_condition = Filter().set_path(AlertAttributes.RuleSeverityId).set_operator(EmOperator.In)
             for severity in severities:
                 severity_id = ALERT_SEVERITIES[severity.lower()]
                 severity_condition.add_value(
@@ -685,59 +627,33 @@ class AlertSearchQueryBuilder:
             self.search_query.filter.add_filter(severity_condition)
         return self
 
-    def with_threat_models(
-        self: TAlertSearchQueryBuilder, threat_models: List[str]
-    ) -> TAlertSearchQueryBuilder:
+    def with_threat_models(self: TAlertSearchQueryBuilder, threat_models: List[str]) -> TAlertSearchQueryBuilder:
         if threat_models:
-            rule_condition = (
-                Filter().set_path(AlertAttributes.RuleName).set_operator(EmOperator.In)
-            )
+            rule_condition = Filter().set_path(AlertAttributes.RuleName).set_operator(EmOperator.In)
             for threat_model in threat_models:
-                rule_condition.add_value(
-                    {AlertAttributes.RuleName: threat_model, "displayValue": "New"}
-                )
+                rule_condition.add_value({AlertAttributes.RuleName: threat_model, "displayValue": "New"})
             self.search_query.filter.add_filter(rule_condition)
         return self
 
-    def with_alert_ids(
-        self: TAlertSearchQueryBuilder, alert_ids: List[str]
-    ) -> TAlertSearchQueryBuilder:
+    def with_alert_ids(self: TAlertSearchQueryBuilder, alert_ids: List[str]) -> TAlertSearchQueryBuilder:
         if alert_ids:
-            alert_condition = (
-                Filter().set_path(AlertAttributes.Id).set_operator(EmOperator.In)
-            )
+            alert_condition = Filter().set_path(AlertAttributes.Id).set_operator(EmOperator.In)
             for alert_id in alert_ids:
-                alert_condition.add_value(
-                    {AlertAttributes.Id: alert_id, "displayValue": "New"}
-                )
+                alert_condition.add_value({AlertAttributes.Id: alert_id, "displayValue": "New"})
             self.search_query.filter.add_filter(alert_condition)
         return self
 
-    def with_device(
-        self: TAlertSearchQueryBuilder, devices: List[str]
-    ) -> TAlertSearchQueryBuilder:
+    def with_device(self: TAlertSearchQueryBuilder, devices: List[str]) -> TAlertSearchQueryBuilder:
         if devices:
-            device_condition = (
-                Filter()
-                .set_path(AlertAttributes.DeviceHostname)
-                .set_operator(EmOperator.In)
-            )
+            device_condition = Filter().set_path(AlertAttributes.DeviceHostname).set_operator(EmOperator.In)
             for device in devices:
-                device_condition.add_value(
-                    {AlertAttributes.DeviceHostname: device, "displayValue": device}
-                )
+                device_condition.add_value({AlertAttributes.DeviceHostname: device, "displayValue": device})
             self.search_query.filter.add_filter(device_condition)
         return self
 
-    def with_users(
-        self: TAlertSearchQueryBuilder, users: List[str]
-    ) -> TAlertSearchQueryBuilder:
+    def with_users(self: TAlertSearchQueryBuilder, users: List[str]) -> TAlertSearchQueryBuilder:
         if users:
-            user_condition = (
-                Filter()
-                .set_path(AlertAttributes.UserIdentityName)
-                .set_operator(EmOperator.In)
-            )
+            user_condition = Filter().set_path(AlertAttributes.UserIdentityName).set_operator(EmOperator.In)
             for user_name in users:
                 user_condition.add_value(
                     {
@@ -748,18 +664,12 @@ class AlertSearchQueryBuilder:
             self.search_query.filter.add_filter(user_condition)
         return self
 
-    def with_statuses(
-        self: TAlertSearchQueryBuilder, statuses: List[str]
-    ) -> TAlertSearchQueryBuilder:
+    def with_statuses(self: TAlertSearchQueryBuilder, statuses: List[str]) -> TAlertSearchQueryBuilder:
         if statuses:
-            status_condition = (
-                Filter().set_path(AlertAttributes.StatusId).set_operator(EmOperator.In)
-            )
+            status_condition = Filter().set_path(AlertAttributes.StatusId).set_operator(EmOperator.In)
             for status in statuses:
                 status_id = ALERT_STATUSES[status.lower()]
-                status_condition.add_value(
-                    {AlertAttributes.StatusId: status_id, "displayValue": status}
-                )
+                status_condition.add_value({AlertAttributes.StatusId: status_id, "displayValue": status})
             self.search_query.filter.add_filter(status_condition)
         return self
 
@@ -809,9 +719,7 @@ class AlertSearchQueryBuilder:
             self.search_query.filter.add_filter(ingest_time_condition)
         return self
 
-    def with_last_days(
-        self: TAlertSearchQueryBuilder, last_days: Optional[int]
-    ) -> TAlertSearchQueryBuilder:
+    def with_last_days(self: TAlertSearchQueryBuilder, last_days: Optional[int]) -> TAlertSearchQueryBuilder:
         if last_days:
             time_condition = (
                 Filter()
@@ -823,12 +731,7 @@ class AlertSearchQueryBuilder:
         return self
 
     def with_aggregation(self: TAlertSearchQueryBuilder) -> TAlertSearchQueryBuilder:
-        aggregation = (
-            Filter()
-            .set_path(AlertAttributes.Aggregate)
-            .set_operator(EmOperator.Equals)
-            .add_value({AlertAttributes.Aggregate: 1})
-        )
+        aggregation = Filter().set_path(AlertAttributes.Aggregate).set_operator(EmOperator.Equals).add_value({AlertAttributes.Aggregate: 1})
         self.search_query.filter.add_filter(aggregation)
         return self
 
@@ -840,21 +743,11 @@ class EventSearchQueryBuilder:
     def __init__(
         self,
     ):
-        self.search_query = (
-            Query()
-            .set_entity_name("Event")
-            .set_filter(FilterGroup().set_filter_operator(FilterOperator.And))
-        )
+        self.search_query = Query().set_entity_name("Event").set_filter(FilterGroup().set_filter_operator(FilterOperator.And))
 
-    def with_alert_ids(
-        self: TEventSearchQueryBuilder, alert_ids: List[str]
-    ) -> TEventSearchQueryBuilder:
+    def with_alert_ids(self: TEventSearchQueryBuilder, alert_ids: List[str]) -> TEventSearchQueryBuilder:
         if alert_ids:
-            event_condition = (
-                Filter()
-                .set_path(EventAttributes.EventAlertId)
-                .set_operator(EmOperator.In)
-            )
+            event_condition = Filter().set_path(EventAttributes.EventAlertId).set_operator(EmOperator.In)
             for alert_id in alert_ids:
                 event_condition.add_value({EventAttributes.EventAlertId: alert_id})
             self.search_query.filter.add_filter(event_condition)
@@ -886,17 +779,13 @@ class EventSearchQueryBuilder:
             self.search_query.filter.add_filter(time_condition)
         return self
 
-    def with_last_days(
-        self: TEventSearchQueryBuilder, last_days: Optional[int]
-    ) -> TEventSearchQueryBuilder:
+    def with_last_days(self: TEventSearchQueryBuilder, last_days: Optional[int]) -> TEventSearchQueryBuilder:
         if last_days:
             time_condition = (
                 Filter()
                 .set_path(EventAttributes.EventTimeUtc)
                 .set_operator(EmOperator.LastDays)
-                .add_value(
-                    {EventAttributes.EventTimeUtc: last_days, "displayValue": last_days}
-                )
+                .add_value({EventAttributes.EventTimeUtc: last_days, "displayValue": last_days})
             )
             self.search_query.filter.add_filter(time_condition)
         return self
@@ -911,25 +800,17 @@ class SearchRequestBuilder:
         self.rows = Rows().set_columns(attribute_paths)
         self.request_params = RequestParams()
 
-    def with_ordering(
-        self: TSearchRequestBuilder, column: str, desc: bool
-    ) -> TSearchRequestBuilder:
+    def with_ordering(self: TSearchRequestBuilder, column: str, desc: bool) -> TSearchRequestBuilder:
         self.rows.add_ordering({"Path": column, "SortOrder": "Desc" if desc else "Asc"})
         return self
 
-    def with_request_params(
-        self: TSearchRequestBuilder, source: int, source_name: str
-    ) -> TSearchRequestBuilder:
-        self.request_params.set_search_source_name(source_name).set_search_source(
-            source
-        )
+    def with_request_params(self: TSearchRequestBuilder, source: int, source_name: str) -> TSearchRequestBuilder:
+        self.request_params.set_search_source_name(source_name).set_search_source(source)
         return self
 
     def build(self) -> SearchRequest:
         request = SearchRequest()
-        request.set_query(self.query).set_rows(self.rows).set_request_params(
-            self.request_params
-        )
+        request.set_query(self.query).set_rows(self.rows).set_request_params(self.request_params)
         return request
 
 
@@ -973,12 +854,8 @@ def create_alert_request(
     return request
 
 
-def create_alerted_events_request(
-    alert_ids: List[str], descending_order=True
-) -> SearchRequest:
-    event_query = (
-        EventSearchQueryBuilder().with_alert_ids(alert_ids).with_last_days(365).build()
-    )
+def create_alerted_events_request(alert_ids: List[str], descending_order=True) -> SearchRequest:
+    event_query = EventSearchQueryBuilder().with_alert_ids(alert_ids).with_last_days(365).build()
 
     request = (
         SearchRequestBuilder(event_query, EventAttributes.Columns)

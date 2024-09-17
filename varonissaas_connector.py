@@ -75,9 +75,7 @@ class VaronisSaasConnector(BaseConnector):
             return RetVal(phantom.APP_SUCCESS, {})
 
         return RetVal(
-            action_result.set_status(
-                phantom.APP_ERROR, "Empty response and no information in the header"
-            ),
+            action_result.set_status(phantom.APP_ERROR, "Empty response and no information in the header"),
             None,
         )
 
@@ -94,9 +92,7 @@ class VaronisSaasConnector(BaseConnector):
         except:
             error_text = "Cannot parse error details"
 
-        message = "Status Code: {0}. Data from server:\n{1}\n".format(
-            status_code, error_text
-        )
+        message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
 
         message = message.replace("{", "{{").replace("}", "}}")
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
@@ -119,9 +115,7 @@ class VaronisSaasConnector(BaseConnector):
             return RetVal(phantom.APP_SUCCESS, resp_json)
 
         # You should process the error returned in the json
-        message = "Error from server. Status Code: {0} Data from server: {1}".format(
-            r.status_code, r.text.replace("{", "{{").replace("}", "}}")
-        )
+        message = "Error from server. Status Code: {0} Data from server: {1}".format(r.status_code, r.text.replace("{", "{{").replace("}", "}}"))
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
@@ -224,9 +218,7 @@ class VaronisSaasConnector(BaseConnector):
 
         return self._process_response(resp, action_result)
 
-    def _make_search_call(
-        self, action_result, query: SearchRequest, count: int, page: int = 1
-    ) -> RetVal:
+    def _make_search_call(self, action_result, query: SearchRequest, count: int, page: int = 1) -> RetVal:
 
         ret_val, results = self._make_rest_call(
             action_result=action_result,
@@ -239,9 +231,7 @@ class VaronisSaasConnector(BaseConnector):
             self.save_progress("Faild to make search query call.")
             return action_result.get_status()
 
-        search_result_location = next(
-            filter(lambda x: (x["dataType"] == "rows"), results)
-        )["location"]
+        search_result_location = next(filter(lambda x: (x["dataType"] == "rows"), results))["location"]
 
         ret_val, results = self._make_rest_call(
             action_result=action_result,
@@ -273,9 +263,7 @@ class VaronisSaasConnector(BaseConnector):
 
         self._state[VDSP_ACCESS_TOKEN_KEY] = response[VDSP_ACCESS_TOKEN_KEY]
         self._state[VDSP_TOKEN_TYPE_KEY] = response[VDSP_TOKEN_TYPE_KEY]
-        self._state[VDSP_EXPIRES_IN_KEY] = (
-            int(time.time()) + response[VDSP_EXPIRES_IN_KEY] - VDSP_REQUEST_TIMEOUT
-        )
+        self._state[VDSP_EXPIRES_IN_KEY] = int(time.time()) + response[VDSP_EXPIRES_IN_KEY] - VDSP_REQUEST_TIMEOUT
 
         self.debug_print("Expiration time", self._state[VDSP_EXPIRES_IN_KEY])
 
@@ -349,9 +337,7 @@ class VaronisSaasConnector(BaseConnector):
 
         return payload
 
-    def _get_alerted_events_payload(
-        self, alert_ids: List[str], descending_order: bool = True
-    ) -> SearchRequest:
+    def _get_alerted_events_payload(self, alert_ids: List[str], descending_order: bool = True) -> SearchRequest:
         """Get alerted events parameters
 
         :type alert_ids: ``List[str]``
@@ -373,9 +359,7 @@ class VaronisSaasConnector(BaseConnector):
         :rtype: ``bool``
 
         """
-        return self._make_rest_call(
-            action_result, VDSP_UPDATE_ALET_STATUS_ENDPOINT, method="POST", json=query
-        )
+        return self._make_rest_call(action_result, VDSP_UPDATE_ALET_STATUS_ENDPOINT, method="POST", json=query)
 
     def _create_container(self, data: AlertItem):
         container = dict()
@@ -435,9 +419,7 @@ class VaronisSaasConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_alerts(self, param):
-        self.save_progress(
-            "In action handler for: {0}".format(self.get_action_identifier())
-        )
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
@@ -454,9 +436,7 @@ class VaronisSaasConnector(BaseConnector):
         descending_order = param.get("descending_order", True)
 
         try:
-            user_names = tools.try_convert(
-                user_names, lambda x: tools.multi_value_to_string_list(x)
-            )
+            user_names = tools.try_convert(user_names, lambda x: tools.multi_value_to_string_list(x))
 
             if last_days:
                 last_days = tools.try_convert(
@@ -469,19 +449,11 @@ class VaronisSaasConnector(BaseConnector):
                     raise ValueError("last_days cannot be less then 1")
 
             if user_names and len(user_names) > VDSP_MAX_USERS_TO_SEARCH:
-                raise ValueError(
-                    f"cannot provide more then {VDSP_MAX_USERS_TO_SEARCH} users"
-                )
+                raise ValueError(f"cannot provide more then {VDSP_MAX_USERS_TO_SEARCH} users")
 
-            alert_severities = tools.try_convert(
-                alert_severities, lambda x: tools.multi_value_to_string_list(x)
-            )
-            device_names = tools.try_convert(
-                device_names, lambda x: tools.multi_value_to_string_list(x)
-            )
-            threat_model_names = tools.try_convert(
-                threat_model_names, lambda x: tools.multi_value_to_string_list(x)
-            )
+            alert_severities = tools.try_convert(alert_severities, lambda x: tools.multi_value_to_string_list(x))
+            device_names = tools.try_convert(device_names, lambda x: tools.multi_value_to_string_list(x))
+            threat_model_names = tools.try_convert(threat_model_names, lambda x: tools.multi_value_to_string_list(x))
             max_results = tools.try_convert(
                 max_results,
                 lambda x: int(x),
@@ -490,21 +462,15 @@ class VaronisSaasConnector(BaseConnector):
             start_time = tools.try_convert(
                 start_time,
                 lambda x: datetime.fromisoformat(x),
-                ValueError(
-                    f"start_time should be in iso format, but it is {start_time}."
-                ),
+                ValueError(f"start_time should be in iso format, but it is {start_time}."),
             )
             end_time = tools.try_convert(
                 end_time,
                 lambda x: datetime.fromisoformat(x),
-                ValueError(
-                    f"end_time should be in iso format, but it is {start_time}."
-                ),
+                ValueError(f"end_time should be in iso format, but it is {start_time}."),
             )
 
-            alert_statuses = tools.try_convert(
-                alert_statuses, lambda x: tools.multi_value_to_string_list(x)
-            )
+            alert_statuses = tools.try_convert(alert_statuses, lambda x: tools.multi_value_to_string_list(x))
             page = tools.try_convert(
                 page,
                 lambda x: int(x),
@@ -514,9 +480,7 @@ class VaronisSaasConnector(BaseConnector):
             if alert_severities:
                 for severity in alert_severities:
                     if severity.lower() not in ALERT_SEVERITIES:
-                        raise ValueError(
-                            f"There is no severity {severity}. Posible severities: {ALERT_SEVERITIES}"
-                        )
+                        raise ValueError(f"There is no severity {severity}. Posible severities: {ALERT_SEVERITIES}")
 
             if alert_statuses:
                 for status in alert_statuses:
@@ -535,13 +499,9 @@ class VaronisSaasConnector(BaseConnector):
                 descending_order=descending_order,
             )
 
-            self.debug_print(
-                "Alert search request payload:", json.dumps(payload.to_dict())
-            )
+            self.debug_print("Alert search request payload:", json.dumps(payload.to_dict()))
 
-            ret_val, results = self._make_search_call(
-                action_result, query=payload, page=page, count=max_results
-            )
+            ret_val, results = self._make_search_call(action_result, query=payload, page=page, count=max_results)
 
             self.debug_print("Request completed", ret_val)
 
@@ -562,27 +522,21 @@ class VaronisSaasConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_update_alert_status(self, param):
-        self.save_progress(
-            "In action handler for: {0}".format(self.get_action_identifier())
-        )
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
 
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
             status = param["status"]
             alert_id = param["alert_id"]
 
-            statuses = list(
-                filter(lambda name: name != "closed", ALERT_STATUSES.keys())
-            )
+            statuses = list(filter(lambda name: name != "closed", ALERT_STATUSES.keys()))
             if status.lower() not in statuses:
                 raise ValueError(f"status must be one of {statuses}.")
 
             status_id = ALERT_STATUSES[status.lower()]
 
             query: Dict[str, Any] = {
-                "AlertGuids": tools.try_convert(
-                    alert_id, lambda x: tools.multi_value_to_string_list(x)
-                ),
+                "AlertGuids": tools.try_convert(alert_id, lambda x: tools.multi_value_to_string_list(x)),
                 "closeReasonId": CLOSE_REASONS["none"],
                 "statusId": status_id,
             }
@@ -600,9 +554,7 @@ class VaronisSaasConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_close_alert(self, param):
-        self.save_progress(
-            "In action handler for: {0}".format(self.get_action_identifier())
-        )
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
@@ -610,17 +562,11 @@ class VaronisSaasConnector(BaseConnector):
             alert_id = param["alert_id"]
             close_reason = param["close_reason"]
 
-            close_reasons = list(
-                filter(
-                    lambda name: not tools.strEqual(name, "none"), CLOSE_REASONS.keys()
-                )
-            )
+            close_reasons = list(filter(lambda name: not tools.strEqual(name, "none"), CLOSE_REASONS.keys()))
             if close_reason.lower() not in close_reasons:
                 raise ValueError(f"close reason must be one of {close_reasons}")
 
-            alert_ids = tools.try_convert(
-                alert_id, lambda x: tools.multi_value_to_string_list(x)
-            )
+            alert_ids = tools.try_convert(alert_id, lambda x: tools.multi_value_to_string_list(x))
             close_reason_id = CLOSE_REASONS[close_reason.lower()]
 
             if len(alert_ids) == 0:
@@ -645,9 +591,7 @@ class VaronisSaasConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_alerted_events(self, param):
-        self.save_progress(
-            "In action handler for: {0}".format(self.get_action_identifier())
-        )
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
 
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
@@ -670,9 +614,7 @@ class VaronisSaasConnector(BaseConnector):
 
             payload = self._get_alerted_events_payload(alert_ids, descending_order)
 
-            ret_val, results = self._make_search_call(
-                action_result, query=payload, page=page, count=count
-            )
+            ret_val, results = self._make_search_call(action_result, query=payload, page=page, count=count)
 
             if phantom.is_fail(ret_val):
                 self.error_print("Get alerted events failed.")
@@ -695,9 +637,7 @@ class VaronisSaasConnector(BaseConnector):
 
         config = self.get_config()
         last_fetched_time = self._state.get(VDSP_LAST_FETCH_TIME, None)
-        last_fetched_time = tools.try_convert(
-            last_fetched_time, lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%f%z")
-        )
+        last_fetched_time = tools.try_convert(last_fetched_time, lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%f%z"))
         ingest_period = config.get(VDSP_INGEST_PERIOD_KEY, VDSP_DEFAULT_INGEST_PERIOD)
         is_ingest_artifacts = config.get(VDSP_INGEST_ARTIFACTS_FLAG, True)
         alert_status = config.get(VDSP_ALERT_STATUS_KEY, None)
@@ -710,20 +650,12 @@ class VaronisSaasConnector(BaseConnector):
         try:
             container_count = param.get(phantom.APP_JSON_CONTAINER_COUNT, float("inf"))
             start_time = tools.numeric_to_date(ingest_period)
-            artifact_count = param.get(
-                phantom.APP_JSON_ARTIFACT_COUNT, VDSP_MAX_ALERTED_EVENTS
-            )
+            artifact_count = param.get(phantom.APP_JSON_ARTIFACT_COUNT, VDSP_MAX_ALERTED_EVENTS)
 
-            self.save_progress(
-                f"Start ingesting data for interval from {start_time}, amount {container_count}"
-            )
+            self.save_progress(f"Start ingesting data for interval from {start_time}, amount {container_count}")
 
             while container_count > 0:
-                max_alerts = (
-                    VDSP_MAX_ALERTS
-                    if container_count > VDSP_MAX_ALERTS
-                    else container_count
-                )
+                max_alerts = VDSP_MAX_ALERTS if container_count > VDSP_MAX_ALERTS else container_count
                 container_count -= max_alerts
 
                 alert_payload = self._get_alerts_payload(
@@ -736,9 +668,7 @@ class VaronisSaasConnector(BaseConnector):
                 )
 
                 self.save_progress(f"Start ingesting data from {last_fetched_time}")
-                ret_val, alert_results = self._make_search_call(
-                    action_result, query=alert_payload, count=max_alerts
-                )
+                ret_val, alert_results = self._make_search_call(action_result, query=alert_payload, count=max_alerts)
 
                 if phantom.is_fail(ret_val):
                     self.save_progress("On poll Failed.")
@@ -761,9 +691,7 @@ class VaronisSaasConnector(BaseConnector):
                     batch_size = VDSP_MAX_ALERTS
 
                     for batch_alert_ids in tools.batched(alert_ids, batch_size):
-                        event_payload = self._get_alerted_events_payload(
-                            batch_alert_ids, descending_order=False
-                        )
+                        event_payload = self._get_alerted_events_payload(batch_alert_ids, descending_order=False)
 
                         ret_val, event_result = self._make_search_call(
                             action_result,
@@ -772,16 +700,12 @@ class VaronisSaasConnector(BaseConnector):
                         )
 
                         if phantom.is_fail(ret_val):
-                            self.save_progress(
-                                "On poll Failed while getting alerted events."
-                            )
+                            self.save_progress("On poll Failed while getting alerted events.")
                             return action_result.get_status()
 
                         event_items.extend(SearchEventObjectMapper().map(event_result))
 
-                    dict_events = tools.group_by(
-                        event_items, key_func=lambda x: x.AlertId
-                    )
+                    dict_events = tools.group_by(event_items, key_func=lambda x: x.AlertId)
 
                 for alert_res in alert_results:
                     ingest_time = alert_res.IngestTime
@@ -791,9 +715,7 @@ class VaronisSaasConnector(BaseConnector):
                     container = self._create_container(alert_res)
 
                     if dict_events:
-                        artifacts = list(
-                            map(self._create_artifact, dict_events[alert_res.ID])
-                        )
+                        artifacts = list(map(self._create_artifact, dict_events[alert_res.ID]))
                         container["artifacts"] = artifacts
 
                     containers.append(container)
@@ -803,20 +725,14 @@ class VaronisSaasConnector(BaseConnector):
 
                 for cr in container_responses:
                     self.save_progress(
-                        "Save container returns, ret_val: {0}, message: {1}, id: {2}".format(
-                            cr["success"], cr["message"], cr["id"]
-                        )
+                        "Save container returns, ret_val: {0}, message: {1}, id: {2}".format(cr["success"], cr["message"], cr["id"])
                     )
 
                 if phantom.is_fail(ret_val):
-                    self.save_progress(
-                        f"On poll Failed while saving containers. Message: {message}"
-                    )
+                    self.save_progress(f"On poll Failed while saving containers. Message: {message}")
                     return action_result.get_status()
 
-            self._state[VDSP_LAST_FETCH_TIME] = last_fetched_time.strftime(
-                "%Y-%m-%dT%H:%M:%S.%f%z"
-            )
+            self._state[VDSP_LAST_FETCH_TIME] = last_fetched_time.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
             action_result.update_summary({"alerts_count": len(alert_results)})
 
         except Exception as e:
@@ -870,11 +786,7 @@ class VaronisSaasConnector(BaseConnector):
         self._session = requests.Session()
 
         try:
-            method_whitelist = (
-                "allowed_methods"
-                if hasattr(Retry.DEFAULT, "allowed_methods")
-                else "method_whitelist"
-            )
+            method_whitelist = "allowed_methods" if hasattr(Retry.DEFAULT, "allowed_methods") else "method_whitelist"
             whitelist_kawargs = {method_whitelist: frozenset(["GET", "POST", "PUT"])}
             retry = Retry(
                 total=REQUEST_RETRIES,
@@ -900,9 +812,7 @@ class VaronisSaasConnector(BaseConnector):
             if state < int(time.time()):
                 self._authorize(api_key)
 
-            self._headers = {
-                "Authorization": f"{self._state[VDSP_TOKEN_TYPE_KEY]} {self._state[VDSP_ACCESS_TOKEN_KEY]}"
-            }
+            self._headers = {"Authorization": f"{self._state[VDSP_TOKEN_TYPE_KEY]} {self._state[VDSP_ACCESS_TOKEN_KEY]}"}
         except Exception as e:
             self.error_print("Authorization", e)
             return phantom.APP_ERROR

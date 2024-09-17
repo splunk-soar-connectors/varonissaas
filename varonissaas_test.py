@@ -23,9 +23,7 @@ class VaronisSaaSTest(unittest.TestCase):
         with open("test_data/get_alerts_empty_param_result.json", "r") as file:
             expected_result = json.load(file)
 
-        self.connector._make_search_call = MagicMock(
-            return_value=(True, search_response)
-        )
+        self.connector._make_search_call = MagicMock(return_value=(True, search_response))
         param = {}
         action_result = ActionResult(param)
         self.connector.add_action_result = MagicMock(return_value=action_result)
@@ -35,9 +33,7 @@ class VaronisSaaSTest(unittest.TestCase):
         actual_result = action_result.get_data()
 
         # Assert
-        self.connector._make_search_call.assert_called_once_with(
-            action_result, query=expected_search_query, page=1, count=VDSP_MAX_ALERTS
-        )
+        self.connector._make_search_call.assert_called_once_with(action_result, query=expected_search_query, page=1, count=VDSP_MAX_ALERTS)
         self.assertTrue(status)
         self.assertEqual(
             actual_result,
@@ -54,9 +50,7 @@ class VaronisSaaSTest(unittest.TestCase):
         with open("test_data/get_alerts_result.json", "r") as file:
             expected_result = json.load(file)
 
-        self.connector._make_search_call = MagicMock(
-            return_value=(True, search_response)
-        )
+        self.connector._make_search_call = MagicMock(return_value=(True, search_response))
         param = {
             "page": 2,
             "max_results": VDSP_MAX_ALERTS,
@@ -78,9 +72,7 @@ class VaronisSaaSTest(unittest.TestCase):
         actual_result = action_result.get_data()
 
         # Assert
-        self.connector._make_search_call.assert_called_once_with(
-            action_result, query=expected_search_query, page=2, count=VDSP_MAX_ALERTS
-        )
+        self.connector._make_search_call.assert_called_once_with(action_result, query=expected_search_query, page=2, count=VDSP_MAX_ALERTS)
         self.assertTrue(status)
         self.assertEqual(
             actual_result,
@@ -98,12 +90,8 @@ class VaronisSaaSTest(unittest.TestCase):
         with open("test_data/get_alerted_events_result.json", "r") as file:
             expected_result = json.load(file)
 
-        self.connector._make_search_call = MagicMock(
-            return_value=(True, search_response)
-        )
-        param = {
-            "alert_id": "EE53B604-087A-499C-88F5-7E97ABA5BD9E,A08C35C2-731A-4EA1-B350-11204EACA972"
-        }
+        self.connector._make_search_call = MagicMock(return_value=(True, search_response))
+        param = {"alert_id": "EE53B604-087A-499C-88F5-7E97ABA5BD9E,A08C35C2-731A-4EA1-B350-11204EACA972"}
         action_result = ActionResult(param)
         self.connector.add_action_result = MagicMock(return_value=action_result)
 

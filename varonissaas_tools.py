@@ -61,9 +61,7 @@ def arg_to_datetime(interval: Any, is_utc=True) -> Optional[datetime]:
     if interval is None:
         return None
 
-    if (isinstance(interval, str) and interval.isdigit()) or isinstance(
-        interval, (int, float)
-    ):
+    if (isinstance(interval, str) and interval.isdigit()) or isinstance(interval, (int, float)):
         # timestamp is a str containing digits - we just convert it to int
         ms = float(interval)
         if ms > 2000000000.0:
