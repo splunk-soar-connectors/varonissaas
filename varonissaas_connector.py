@@ -1,6 +1,6 @@
 # File: varonissaas_connector.py
 #
-# Copyright (c) Varonis, 2023
+# Copyright (c) Varonis, 2024
 #
 # This unpublished material is proprietary to Varonis SaaS. All
 # rights reserved. The methods and techniques described herein are

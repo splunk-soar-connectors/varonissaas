@@ -1,3 +1,24 @@
+[comment]: # "File: README.md"
+[comment]: # "Copyright (c) Varonis, 2024"
+[comment]: # ""
+[comment]: # "This unpublished material is proprietary to Varonis SaaS. All"
+[comment]: # "rights reserved. The methods and techniques described herein are"
+[comment]: # "considered trade secrets and/or confidential. Reproduction or"
+[comment]: # "distribution, in whole or in part, is forbidden except by express"
+[comment]: # "written permission of Varonis SaaS."
+[comment]: # ""
+[comment]: # "Licensed under the Apache License, Version 2.0 (the 'License');"
+[comment]: # "you may not use this file except in compliance with the License."
+[comment]: # "You may obtain a copy of the License at"
+[comment]: # ""
+[comment]: # "    http://www.apache.org/licenses/LICENSE-2.0"
+[comment]: # ""
+[comment]: # "Unless required by applicable law or agreed to in writing, software distributed under"
+[comment]: # "the License is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,"
+[comment]: # "either express or implied. See the License for the specific language governing permissions"
+[comment]: # "and limitations under the License."
+[comment]: # ""
+
 Provide the following configuration settings for the integration setup to establish a successful connection:
 
 *   **Varonis FQDN** - Enter the Varonis Web Interface address. This is the Fully Qualified Domain Name (FQDN) or IP address of the Varonis server to which you want to connect.
