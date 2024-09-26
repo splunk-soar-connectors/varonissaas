@@ -250,7 +250,7 @@
                 {
                     "data_path": "action_result.data.*.EventUTC",
                     "data_type": "string",
-                    "column_name": "Event UTC",
+                    "column_name": "Event Utc",
                     "column_order": 13
                 },
                 {
@@ -268,7 +268,7 @@
                 {
                     "data_path": "action_result.data.*.EventUTC",
                     "data_type": "string",
-                    "column_name": "EventUTC",
+                    "column_name": "Eventutc",
                     "column_order": 16,
                     "example_values": [
                         "2022-11-11T19:35:00"
@@ -673,7 +673,7 @@
                 {
                     "data_path": "action_result.data.*.BySamAccountName",
                     "data_type": "string",
-                    "column_name": "SAM Account Name",
+                    "column_name": "Sam Account Name",
                     "column_order": 17
                 },
                 {
@@ -817,7 +817,7 @@
                 {
                     "data_path": "action_result.data.*.OnSamAccountName",
                     "data_type": "string",
-                    "column_name": "SAM Account Name",
+                    "column_name": "Sam Account Name",
                     "column_order": 29
                 },
                 {
@@ -856,7 +856,7 @@
                 {
                     "data_path": "action_result.data.*.TimeUTC",
                     "data_type": "string",
-                    "column_name": "UTC Time",
+                    "column_name": "Utc Time",
                     "column_order": 2
                 },
                 {
