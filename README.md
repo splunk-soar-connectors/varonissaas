@@ -49,8 +49,9 @@ The below configuration variables are required for this Connector to operate.  T
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
 **base_url** |  required  | string | Varonis FQDN/IP the integration should connect to
-**ingest_artifacts** |  required  | boolean | Should artifacts be ingested
 **api_key** |  required  | password | Varonis API Key
+**verify_server_cert** |  optional  | boolean | Whether to verify the server certificate
+**ingest_artifacts** |  required  | boolean | Should artifacts be ingested
 **ingest_period** |  required  | string | Alert Retrieval Start (Days Ago)
 **severity** |  optional  | string | Alert Severity
 **threat_model** |  optional  | string | Threat Detection Policies
