@@ -2,7 +2,7 @@
 # Varonis SaaS
 
 Publisher: Varonis  
-Connector Version: 1.0.0  
+Connector Version: 1.0.1  
 Product Vendor: Varonis  
 Product Name: Varonis SaaS  
 Product Version Supported (regex): ".\*"  
