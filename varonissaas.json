@@ -1,6 +1,6 @@
 {
     "appid": "89cf5316-a44d-4037-a07e-5f7504528044",
-    "name": "Varonis SaaS",
+    "name": "Varonis SaaS for SOAR",
     "description": "Varonis SaaS for Splunk SOAR",
     "type": "information",
     "product_vendor": "Varonis",
