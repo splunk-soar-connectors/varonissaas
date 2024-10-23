@@ -1,8 +1,8 @@
 [comment]: # "Auto-generated SOAR connector documentation"
-# Varonis SaaS
+# Varonis SaaS for SOAR
 
 Publisher: Varonis  
-Connector Version: 1.0.1  
+Connector Version: 1.0.2  
 Product Vendor: Varonis  
 Product Name: Varonis SaaS  
 Product Version Supported (regex): ".\*"  
