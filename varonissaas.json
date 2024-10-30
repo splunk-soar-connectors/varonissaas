@@ -16,7 +16,7 @@
     "package_name": "phantom_varonissaas",
     "main_module": "varonissaas_connector.py",
     "fips_complaint": false,
-    "min_phantom_version": "6.2.1",
+    "min_phantom_version": "6.2.2",
     "app_wizard_version": "1.0.0",
     "configuration": {
         "base_url": {
