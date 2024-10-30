@@ -6,7 +6,7 @@ Connector Version: 1.0.3
 Product Vendor: Varonis  
 Product Name: Varonis SaaS  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 6.2.1  
+Minimum Product Version: 6.2.2  
 
 Varonis SaaS for Splunk SOAR
 
