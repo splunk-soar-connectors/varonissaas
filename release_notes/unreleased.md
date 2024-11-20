@@ -1,2 +1,1 @@
 **Unreleased**
-* Update app logos
