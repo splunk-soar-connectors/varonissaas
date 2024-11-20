@@ -1,21 +1,85 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="121px" height="21px" viewBox="0 0 121 21" enable-background="new 0 0 121 21" xml:space="preserve">  <image id="image0" width="121" height="21" x="0" y="0"
-    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHkAAAAVCAQAAADIxYnjAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElN
-RQfnAg0SByrEZyIoAAACyElEQVRYw91Wy7GdMAw9dOAO4hIogRIogRKoIMNMCgglUEAWlOBllpTg
-fTYkDZwsLBv5w01e8u7cmSdWWLKsIx3L6mixIcjerQDABYOsjN2JjyjcGaUHAPbpf391bM+CbHgK
-xIMGALgk0POro3sW6DFBXGXlkP+T9tXRPQv0Re4BAGhT5d2rY3sWZEMvEL2Qe/745B4qcruPT+71
-ltzHq2N7T+kUZIMDnwAAP2G7E+CMr6L80n3+1yPYd0drFSZb8J0vLCwsAOB8uL/Q0gDXNJF83J2i
-yL3LSvFm54eSdDSN9YNMf+v1+CmbjbWsSj+m3hKu1pLtnjKtv7oNDY/rNMXby1OJQxmN4uIk+aNF
-bk6tcSU1wl5CD7IVVm0Zb0NVHh5ppWiDiu9PkLMX2UjQ8UYvhWUcYcZG0lxmUVuFwWdI33wFnri2
-ceTAgat4mQpt2Bn5MlSQ9+qUodmI63GT3+7ILTU8L9rKkdLj06GFlUB2VRKcIv2sdMPVRBtaxbYM
-cnhxWiAr0Ne4ORW18jd30hWknvOECPT9HrIkOoTtSZ7FOY4M/YGuofUkfQV5lYS79C23CSjHzXog
-TZY5yBapx9YVuLnLU5sBsQy32ishGrJV1+rRXVY5J8nvslK82RXpTtpUVatoFW/SmpO7Cfgoa6ZO
-2d8OGWDPPevtBddyJ7OEGOtXDaTKVmqrK6nG1Vycguy5yBdY1Wt4OrVSL/9WyE1GetwJHX8E2Fk1
-E4krVyqHTUplu/PAhVWxypOke0pvRvC//Cfk0KMeQLb8pQNR5B4r25iO+LCFprY2rc5W4BLOoiGU
-tBfff3+X+2biN9wLJzptQiM3w95mcFR/vjGXrdQPUZYSHgqyqcaNNOXVO8XvJoU6UzdpjSwHTYd3
-Ek7wnYshw5QTc9LYMBNz6rZCM+oVWgxxxsauvZU78zX2QJy6OZdzPPbu/A0HHgCtE/5orAAAACV0
-RVh0ZGF0ZTpjcmVhdGUAMjAyMy0wMi0xM1QxODowNzo0MiswMDowMNk7hEMAAAAldEVYdGRhdGU6
-bW9kaWZ5ADIwMjMtMDItMTNUMTg6MDc6NDIrMDA6MDCoZjz/AAAAAElFTkSuQmCC" />
+<svg
+   id="Layer_2"
+   viewBox="0 0 121.3 20.299999"
+   version="1.1"
+   sodipodi:docname="Varonis_Logo_White.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   width="121.3"
+   height="20.299999"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview9"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="5.92"
+     inkscape:cx="89.949324"
+     inkscape:cy="25.084459"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Layer_2" />
+  <defs
+     id="defs1">
+    <style
+       id="style1">.cls-1{fill:#fff;stroke-width:0px;}</style>
+  </defs>
+  <g
+     id="Layer_1-2"
+     transform="scale(0.40333333)">
+    <path
+       class="cls-1"
+       d="m 198.49,21.18 h -2.84 c -8.85,0 -14.57,5.66 -14.57,14.42 0,8.76 5.72,14.42 14.57,14.42 h 2.84 c 8.85,0 14.57,-5.66 14.57,-14.42 0,-8.76 -5.72,-14.42 -14.57,-14.42 z m 8.52,14.42 c 0,5.46 -3.31,8.71 -8.86,8.71 h -2.16 c -5.53,0 -8.82,-3.26 -8.82,-8.71 0,-5.45 3.29,-8.71 8.82,-8.71 h 2.16 c 5.55,0 8.86,3.26 8.86,8.71 z"
+       id="path1" />
+    <path
+       class="cls-1"
+       d="m 260.65,21.18 c -1.88,0 -3.04,1.15 -3.04,3 v 22.84 c 0,1.85 1.16,3 3.04,3 1.88,0 3.01,-1.18 3.01,-3 V 24.18 c 0,-1.82 -1.18,-3 -3.01,-3 z"
+       id="path2" />
+    <path
+       class="cls-1"
+       d="m 108.28,25.97 c 1.03,-1.51 0.72,-3.15 -0.79,-4.18 -1.55,-1.06 -3.16,-0.76 -4.21,0.77 L 90.32,41.55 77.35,22.56 c -1.03,-1.51 -2.67,-1.82 -4.17,-0.79 -1.55,1.06 -1.87,2.67 -0.82,4.2 0,0 15.42,22.67 15.66,22.92 0.63,0.79 1.44,1.17 2.3,1.12 0.87,0.04 1.7,-0.35 2.33,-1.15 0.21,-0.22 15.63,-22.88 15.63,-22.88 z"
+       id="path3" />
+    <path
+       class="cls-1"
+       d="m 291.29,32.75 h -10.66 c -2.58,0 -2.97,-1.84 -2.97,-2.93 0,-1.33 0.52,-2.93 2.97,-2.93 h 15.62 c 1.71,0 2.86,-1.15 2.86,-2.85 0,-1.7 -1.15,-2.85 -2.86,-2.85 H 280.3 c -5.29,0 -8.71,3.39 -8.71,8.64 0,5.25 3.42,8.64 8.71,8.64 h 10.66 c 2.58,0 2.96,1.84 2.96,2.93 0,1.33 -0.51,2.93 -2.96,2.93 h -16.49 c -1.72,0 -2.89,1.14 -2.89,2.85 0,1.71 1.13,2.86 2.89,2.86 h 16.82 c 5.29,0 8.71,-3.39 8.71,-8.64 0,-5.25 -3.42,-8.63 -8.71,-8.63 z"
+       id="path4" />
+    <path
+       class="cls-1"
+       d="m 146.06,24.18 v 22.84 c 0,1.85 1.17,3 3.04,3 1.87,0 3,-1.18 3,-3 v -6.89 h 11.75 l 5.92,8.68 c 0.52,0.77 1.29,1.22 2.1,1.22 0.1,0 0.2,-0.01 0.29,-0.02 1.58,-0.2 2.51,-1.47 2.33,-3.14 -0.04,-0.42 -0.21,-0.85 -0.51,-1.23 l -4.28,-6.25 c 2.98,-1.28 4.77,-4.27 4.77,-8.22 0,-0.13 0,-0.27 -0.02,-0.4 0,-0.05 0,-0.11 0,-0.11 0,-0.06 0,-0.12 0,-0.18 0,-0.13 0.02,-0.26 0.02,-0.4 0,-5.41 -3.26,-8.9 -8.3,-8.9 h -17.09 c -1.88,0 -3.04,1.15 -3.04,3 z m 6.05,2.7 h 13.26 c 3.04,0 3.38,2.62 3.38,3.73 0,1.04 -0.31,3.43 -2.89,3.7 H 152.1 v -7.44 z"
+       id="path5" />
+    <path
+       class="cls-1"
+       d="m 140.21,45.21 c 0,0 -15.42,-22.67 -15.65,-22.92 -0.63,-0.78 -1.44,-1.16 -2.3,-1.12 -0.87,-0.04 -1.7,0.35 -2.33,1.15 -0.21,0.22 -15.63,22.88 -15.63,22.88 -1.03,1.51 -0.72,3.15 0.79,4.18 1.55,1.06 3.16,0.76 4.21,-0.77 l 3.18,-4.66 h 19.55 l 3.18,4.67 c 1.03,1.51 2.67,1.82 4.18,0.79 1.55,-1.06 1.86,-2.67 0.82,-4.2 z m -24.26,-6.34 6.31,-9.24 6.31,9.24 h -12.61 z"
+       id="path6" />
+    <path
+       class="cls-1"
+       d="m 247.08,50.02 c -1.87,0 -2.99,-1.12 -2.99,-2.99 v -11.7 c 0,-6.27 -4.44,-8.51 -8.6,-8.51 h -2.18 c -4.16,0 -8.6,2.24 -8.6,8.51 v 11.7 c 0,1.87 -1.12,2.99 -2.99,2.99 -1.87,0 -3.03,-1.14 -3.03,-2.99 v -11.7 c 0,-8.6 5.61,-14.15 14.29,-14.15 h 2.83 c 8.68,0 14.29,5.56 14.29,14.15 v 11.7 c 0,1.85 -1.16,2.99 -3.03,2.99 z"
+       id="path7" />
+    <polygon
+       class="cls-1"
+       points="0,0 29.45,43.21 35,35.02 11.13,0 "
+       id="polygon7" />
+    <path
+       class="cls-1"
+       d="m 37.42,38.57 -5.55,8.18 0.77,1.13 c 1.58,2.32 4.03,2.78 6.39,1.17 2.3,-1.57 2.77,-4.06 1.2,-6.35 l -2.82,-4.13 z"
+       id="path8" />
+    <polygon
+       class="cls-1"
+       points="21.3,0 40.07,27.55 45.62,19.37 32.43,0 "
+       id="polygon8" />
+    <path
+       class="cls-1"
+       d="M 61.53,42.7 48.04,22.9 42.49,31.08 53.94,47.87 c 1.58,2.32 4.03,2.78 6.39,1.17 2.3,-1.57 2.77,-4.06 1.21,-6.35 z"
+       id="path9" />
+  </g>
 </svg>

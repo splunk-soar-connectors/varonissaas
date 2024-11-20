@@ -11,12 +11,12 @@
     "product_version_regex": ".*",
     "publisher": "Varonis",
     "license": "Copyright (c) Varonis, 2024",
-    "app_version": "1.0.2",
+    "app_version": "1.0.3",
     "utctime_updated": "2022-11-11T17:03:39.248366Z",
     "package_name": "phantom_varonissaas",
     "main_module": "varonissaas_connector.py",
     "fips_complaint": false,
-    "min_phantom_version": "6.2.1",
+    "min_phantom_version": "6.2.2",
     "app_wizard_version": "1.0.0",
     "configuration": {
         "base_url": {
