@@ -1,6 +1,6 @@
 # File: varonissaas_search.py
 #
-# Copyright (c) Varonis, 2024
+# Copyright (c) Varonis, 2024-2025
 #
 # This unpublished material is proprietary to Varonis SaaS. All
 # rights reserved. The methods and techniques described herein are
@@ -21,10 +21,11 @@
 
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any, Dict, List, Optional, TypeVar
+from typing import Any, Optional, TypeVar
 
 from varonissaas_consts import VDSP_MAX_DAYS_BACK
 from varonissaas_tools import *
+
 
 TFilter = TypeVar("TFilter", bound="Filter")
 TFilterGroup = TypeVar("TFilterGroup", bound="FilterGroup")
@@ -149,7 +150,7 @@ class Rows:
         self.grouping = None
         self.ordering = []
 
-    def set_columns(self: TRows, columns: List[str]) -> TRows:
+    def set_columns(self: TRows, columns: list[str]) -> TRows:
         self.columns = columns
         return self
 
@@ -374,8 +375,8 @@ class AlertItem:
         self.Severity: str = None
         self.SeverityId: int = None
         self.Category: str = None
-        self.Country: Optional[List[str]] = None
-        self.State: Optional[List[str]] = None
+        self.Country: Optional[list[str]] = None
+        self.State: Optional[list[str]] = None
         self.Status: str = None
         self.StatusId: int = None
         self.CloseReason: Optional[str] = None
@@ -403,7 +404,7 @@ class AlertItem:
             return getattr(self, key)
         raise KeyError(f"{key} not found in AlertItem")
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return object_to_dict(self)
 
 
@@ -449,14 +450,14 @@ class EventItem:
             return getattr(self, key)
         raise KeyError(f"{key} not found in EventItem")
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return object_to_dict(self)
 
 
 class ThreatModelItem:
     def __init__(self):
         self.Id: Optional[str] = None
-        self.Name: Optional[List[str]] = None
+        self.Name: Optional[list[str]] = None
         self.Category: Optional[str] = None
         self.Severity: Optional[str] = None
         self.Source: Optional[str] = None
@@ -466,7 +467,7 @@ class ThreatModelItem:
             return getattr(self, key)
         raise KeyError(f"{key} not found in EventItem")
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {key: value for key, value in self.__dict__.items() if value is not None}
 
 
@@ -474,8 +475,7 @@ class ThreatModelItem:
 
 
 class SearchAlertObjectMapper:
-
-    def map(self, json_data: Dict[str, Any]) -> List[AlertItem]:
+    def map(self, json_data: dict[str, Any]) -> list[AlertItem]:
         key_valued_objects = convert_json_to_key_value(json_data)
 
         mapped_items = []
@@ -484,7 +484,7 @@ class SearchAlertObjectMapper:
 
         return mapped_items
 
-    def map_item(self, row: Dict[str, Any]) -> AlertItem:
+    def map_item(self, row: dict[str, Any]) -> AlertItem:
         alert_item = AlertItem()
         alert_item.ID = row[AlertAttributes.Id]
         alert_item.Name = row[AlertAttributes.RuleName]
@@ -527,8 +527,7 @@ class SearchAlertObjectMapper:
 
 
 class SearchEventObjectMapper:
-
-    def map(self, json_data: Dict[str, Any]) -> List[EventItem]:
+    def map(self, json_data: dict[str, Any]) -> list[EventItem]:
         key_valued_objects = convert_json_to_key_value(json_data)
 
         mapped_items = []
@@ -537,7 +536,7 @@ class SearchEventObjectMapper:
 
         return mapped_items
 
-    def map_item(self, row: Dict[str, Any]) -> List[EventItem]:
+    def map_item(self, row: dict[str, Any]) -> list[EventItem]:
         alertIds = row.get(EventAttributes.EventAlertId)
         alertIds = multi_value_to_string_list(alertIds)
 
@@ -610,7 +609,7 @@ class SearchEventObjectMapper:
 
 
 class ThreatModelObjectMapper:
-    def map(self, json_data) -> List[Dict[str, Any]]:
+    def map(self, json_data) -> list[dict[str, Any]]:
         key_valued_objects = json_data
 
         mapped_items = []
@@ -619,7 +618,7 @@ class ThreatModelObjectMapper:
 
         return mapped_items
 
-    def map_item(self, row: Dict[str, str]) -> ThreatModelItem:
+    def map_item(self, row: dict[str, str]) -> ThreatModelItem:
         threat_model_item = ThreatModelItem()
         threat_model_item.ID = row[ThreatModelAttributes.Id]
         threat_model_item.Name = row[ThreatModelAttributes.Name]
@@ -634,7 +633,7 @@ class AlertSearchQueryBuilder:
     def __init__(self):
         self.search_query = Query().set_entity_name("Alert").set_filter(FilterGroup().set_filter_operator(FilterOperator.And))
 
-    def with_severities(self: TAlertSearchQueryBuilder, severities: List[str]) -> TAlertSearchQueryBuilder:
+    def with_severities(self: TAlertSearchQueryBuilder, severities: list[str]) -> TAlertSearchQueryBuilder:
         if severities:
             severity_condition = Filter().set_path(AlertAttributes.RuleSeverityId).set_operator(EmOperator.In)
             for severity in severities:
@@ -648,7 +647,7 @@ class AlertSearchQueryBuilder:
             self.search_query.filter.add_filter(severity_condition)
         return self
 
-    def with_threat_models(self: TAlertSearchQueryBuilder, threat_models: List[str]) -> TAlertSearchQueryBuilder:
+    def with_threat_models(self: TAlertSearchQueryBuilder, threat_models: list[str]) -> TAlertSearchQueryBuilder:
         if threat_models:
             rule_condition = Filter().set_path(AlertAttributes.RuleName).set_operator(EmOperator.In)
             for threat_model in threat_models:
@@ -656,7 +655,7 @@ class AlertSearchQueryBuilder:
             self.search_query.filter.add_filter(rule_condition)
         return self
 
-    def with_alert_ids(self: TAlertSearchQueryBuilder, alert_ids: List[str]) -> TAlertSearchQueryBuilder:
+    def with_alert_ids(self: TAlertSearchQueryBuilder, alert_ids: list[str]) -> TAlertSearchQueryBuilder:
         if alert_ids:
             alert_condition = Filter().set_path(AlertAttributes.Id).set_operator(EmOperator.In)
             for alert_id in alert_ids:
@@ -664,7 +663,7 @@ class AlertSearchQueryBuilder:
             self.search_query.filter.add_filter(alert_condition)
         return self
 
-    def with_device(self: TAlertSearchQueryBuilder, devices: List[str]) -> TAlertSearchQueryBuilder:
+    def with_device(self: TAlertSearchQueryBuilder, devices: list[str]) -> TAlertSearchQueryBuilder:
         if devices:
             device_condition = Filter().set_path(AlertAttributes.DeviceHostname).set_operator(EmOperator.In)
             for device in devices:
@@ -672,7 +671,7 @@ class AlertSearchQueryBuilder:
             self.search_query.filter.add_filter(device_condition)
         return self
 
-    def with_users(self: TAlertSearchQueryBuilder, users: List[str]) -> TAlertSearchQueryBuilder:
+    def with_users(self: TAlertSearchQueryBuilder, users: list[str]) -> TAlertSearchQueryBuilder:
         if users:
             user_condition = Filter().set_path(AlertAttributes.UserIdentityName).set_operator(EmOperator.In)
             for user_name in users:
@@ -685,7 +684,7 @@ class AlertSearchQueryBuilder:
             self.search_query.filter.add_filter(user_condition)
         return self
 
-    def with_statuses(self: TAlertSearchQueryBuilder, statuses: List[str]) -> TAlertSearchQueryBuilder:
+    def with_statuses(self: TAlertSearchQueryBuilder, statuses: list[str]) -> TAlertSearchQueryBuilder:
         if statuses:
             status_condition = Filter().set_path(AlertAttributes.StatusId).set_operator(EmOperator.In)
             for status in statuses:
@@ -766,7 +765,7 @@ class EventSearchQueryBuilder:
     ):
         self.search_query = Query().set_entity_name("Event").set_filter(FilterGroup().set_filter_operator(FilterOperator.And))
 
-    def with_alert_ids(self: TEventSearchQueryBuilder, alert_ids: List[str]) -> TEventSearchQueryBuilder:
+    def with_alert_ids(self: TEventSearchQueryBuilder, alert_ids: list[str]) -> TEventSearchQueryBuilder:
         if alert_ids:
             event_condition = Filter().set_path(EventAttributes.EventAlertId).set_operator(EmOperator.In)
             for alert_id in alert_ids:
@@ -816,7 +815,7 @@ class EventSearchQueryBuilder:
 
 
 class SearchRequestBuilder:
-    def __init__(self, query: Query, attribute_paths: List[str]):
+    def __init__(self, query: Query, attribute_paths: list[str]):
         self.query = query
         self.rows = Rows().set_columns(attribute_paths)
         self.request_params = RequestParams()
@@ -836,20 +835,19 @@ class SearchRequestBuilder:
 
 
 def create_alert_request(
-    threat_models: Optional[List[str]] = None,
+    threat_models: Optional[list[str]] = None,
     start_time: Optional[datetime] = None,
     end_time: Optional[datetime] = None,
     ingest_time_start: Optional[datetime] = None,
     ingest_time_end: Optional[datetime] = None,
-    device_names: Optional[List[str]] = None,
+    device_names: Optional[list[str]] = None,
     last_days: Optional[int] = None,
-    users: Optional[List[str]] = None,
-    alert_statuses: Optional[List[str]] = None,
-    alert_severities: Optional[List[str]] = None,
-    alert_ids: Optional[List[str]] = None,
+    users: Optional[list[str]] = None,
+    alert_statuses: Optional[list[str]] = None,
+    alert_severities: Optional[list[str]] = None,
+    alert_ids: Optional[list[str]] = None,
     descending_order: bool = True,
 ) -> SearchRequest:
-
     alert_query = (
         AlertSearchQueryBuilder()
         .with_threat_models(threat_models)
@@ -875,7 +873,7 @@ def create_alert_request(
     return request
 
 
-def create_alerted_events_request(alert_ids: List[str], descending_order=True) -> SearchRequest:
+def create_alerted_events_request(alert_ids: list[str], descending_order=True) -> SearchRequest:
     event_query = EventSearchQueryBuilder().with_alert_ids(alert_ids).with_last_days(365).build()
 
     request = (
@@ -888,7 +886,7 @@ def create_alerted_events_request(alert_ids: List[str], descending_order=True) -
     return request
 
 
-def get_query_range(count: int, page: int = 1) -> Optional[Dict[str, int]]:
+def get_query_range(count: int, page: int = 1) -> Optional[dict[str, int]]:
     """Generate query for range of the search results
     :type count: ``int``
     :param count: Max amount of the search results

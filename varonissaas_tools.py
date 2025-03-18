@@ -1,6 +1,6 @@
 # File: varonissaas_test.py
 #
-# Copyright (c) Varonis, 2024
+# Copyright (c) Varonis, 2024-2025
 #
 # This unpublished material is proprietary to Varonis SaaS. All
 # rights reserved. The methods and techniques described herein are
@@ -22,7 +22,7 @@
 from collections import deque
 from datetime import datetime, timezone
 from itertools import groupby, islice
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 import dateparser
 
@@ -102,11 +102,11 @@ def arg_to_datetime(interval: Any, is_utc=True) -> Optional[datetime]:
 
         if date is None:
             # if d is None it means dateparser failed to parse it
-            raise ValueError('"{}" is not a valid date'.format(interval))
+            raise ValueError(f'"{interval}" is not a valid date')
 
         return date
 
-    raise ValueError('"{}" is not a valid date+'.format(interval))
+    raise ValueError(f'"{interval}" is not a valid date+')
 
 
 def numeric_to_date(interval: Any, is_utc=True) -> Optional[datetime]:
@@ -172,7 +172,7 @@ def parse_bool_list(value: str) -> str:
     return None
 
 
-def convert_json_to_key_value(data: Dict[str, Any]) -> List[Dict[str, Any]]:
+def convert_json_to_key_value(data: dict[str, Any]) -> list[dict[str, Any]]:
     result = []
     for row in data["rows"]:
         obj = {}
@@ -230,7 +230,7 @@ def object_to_dict(obj):
     return result
 
 
-def convert_level(level: str, levels: List[str]) -> List[str]:
+def convert_level(level: str, levels: list[str]) -> list[str]:
     if level is None:
         return []
     result = levels.copy()
@@ -241,7 +241,7 @@ def convert_level(level: str, levels: List[str]) -> List[str]:
     return result
 
 
-def group_by(data: List[Any], key_func: Any) -> Dict[str, List[Any]]:
+def group_by(data: list[Any], key_func: Any) -> dict[str, list[Any]]:
     data = sorted(data, key=key_func)
     grouping = groupby(data, key=key_func)
     result = {}

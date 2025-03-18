@@ -1,6 +1,6 @@
 # File: varonissaas_test.py
 #
-# Copyright (c) Varonis, 2024
+# Copyright (c) Varonis, 2024-2025
 #
 # This unpublished material is proprietary to Varonis SaaS. All
 # rights reserved. The methods and techniques described herein are
@@ -37,11 +37,11 @@ class VaronisSaaSTest(unittest.TestCase):
 
     def test_handle_get_alerts_empty_param(self):
         # Arrange
-        with open("test_data/get_varonissaas_alerts_empty_param_query.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_empty_param_query.json") as file:
             expected_search_query = json.load(file)
-        with open("test_data/get_varonissaas_alerts_empty_param_response.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_empty_param_response.json") as file:
             search_response = json.load(file)
-        with open("test_data/get_varonissaas_alerts_empty_param_result.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_empty_param_result.json") as file:
             expected_result = json.load(file)
 
         self.connector._make_search_call = MagicMock(return_value=(True, search_response))
@@ -64,11 +64,11 @@ class VaronisSaaSTest(unittest.TestCase):
 
     def test_handle_get_alerts(self):
         # Arrange
-        with open("test_data/get_varonissaas_alerts_query.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_query.json") as file:
             expected_search_query = json.load(file)
-        with open("test_data/get_varonissaas_alerts_response.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_response.json") as file:
             search_response = json.load(file)
-        with open("test_data/get_varonissaas_alerts_result.json", "r") as file:
+        with open("test_data/get_varonissaas_alerts_result.json") as file:
             expected_result = json.load(file)
 
         self.connector._make_search_call = MagicMock(return_value=(True, search_response))
@@ -104,11 +104,11 @@ class VaronisSaaSTest(unittest.TestCase):
         self.connector.add_action_result = MagicMock(return_value=action_result)
 
     def test_handle_get_alerted_events(self):
-        with open("test_data/get_varonissaas_alerted_events_query.json", "r") as file:
+        with open("test_data/get_varonissaas_alerted_events_query.json") as file:
             expected_search_query = json.load(file)
-        with open("test_data/get_varonissaas_alerted_events_response.json", "r") as file:
+        with open("test_data/get_varonissaas_alerted_events_response.json") as file:
             search_response = json.load(file)
-        with open("test_data/get_varonissaas_alerted_events_result.json", "r") as file:
+        with open("test_data/get_varonissaas_alerted_events_result.json") as file:
             expected_result = json.load(file)
 
         self.connector._make_search_call = MagicMock(return_value=(True, search_response))
