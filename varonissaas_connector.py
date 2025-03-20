@@ -1,6 +1,6 @@
 # File: varonissaas_connector.py
 #
-# Copyright (c) Varonis, 2024
+# Copyright (c) Varonis, 2024-2025
 #
 # This unpublished material is proprietary to Varonis SaaS. All
 # rights reserved. The methods and techniques described herein are
@@ -20,13 +20,12 @@
 # and limitations under the License.
 
 # Python 3 Compatibility imports
-from __future__ import print_function, unicode_literals
 
 import json
 import sys
 import time
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 # Phantom App imports
 import phantom.app as phantom
@@ -42,24 +41,22 @@ import varonissaas_tools as tools
 from varonissaas_consts import *
 from varonissaas_search import *
 
+
 REQUEST_RETRIES = 30
 HTTP_STATUS_WHITE_LIST = [304, 206]
 
 
 class RetVal(tuple):
-
     def __new__(cls, val1: bool, val2=None):
         return tuple.__new__(RetVal, (val1, val2))
 
 
 class VaronisSaasConnector(BaseConnector):
-
     def __init__(self):
-
         # Call the BaseConnectors init first
-        super(VaronisSaasConnector, self).__init__()
+        super().__init__()
 
-        self._state: Dict[str, Any] = None
+        self._state: dict[str, Any] = None
         self._session = None
         self._verify = None
         self._headers = None
@@ -92,7 +89,7 @@ class VaronisSaasConnector(BaseConnector):
         except:
             error_text = "Cannot parse error details"
 
-        message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
+        message = f"Status Code: {status_code}. Data from server:\n{error_text}\n"
 
         message = message.replace("{", "{{").replace("}", "}}")
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
@@ -105,7 +102,7 @@ class VaronisSaasConnector(BaseConnector):
             return RetVal(
                 action_result.set_status(
                     phantom.APP_ERROR,
-                    "Unable to parse JSON response. Error: {0}".format(str(e)),
+                    f"Unable to parse JSON response. Error: {e!s}",
                 ),
                 None,
             )
@@ -115,7 +112,7 @@ class VaronisSaasConnector(BaseConnector):
             return RetVal(phantom.APP_SUCCESS, resp_json)
 
         # You should process the error returned in the json
-        message = "Error from server. Status Code: {0} Data from server: {1}".format(r.status_code, r.text.replace("{", "{{").replace("}", "}}"))
+        message = "Error from server. Status Code: {} Data from server: {}".format(r.status_code, r.text.replace("{", "{{").replace("}", "}}"))
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
@@ -144,7 +141,7 @@ class VaronisSaasConnector(BaseConnector):
             return self._process_empty_response(r, action_result)
 
         # everything else is actually an error at this point
-        message = "Can't process response from server. Status Code: {0} Data from server: {1}".format(
+        message = "Can't process response from server. Status Code: {} Data from server: {}".format(
             r.status_code, r.text.replace("{", "{{").replace("}", "}}")
         )
 
@@ -162,7 +159,6 @@ class VaronisSaasConnector(BaseConnector):
         timeout=VDSP_REQUEST_TIMEOUT,
         **kwargs,
     ) -> Response:
-
         address = full_url if full_url else tools.urljoin(self._base_url, url_suffix)
         headers = headers if headers else self._headers
         headers["varonis-integration"] = "Splunk SOAR"
@@ -211,7 +207,7 @@ class VaronisSaasConnector(BaseConnector):
             return RetVal(
                 action_result.set_status(
                     phantom.APP_ERROR,
-                    "Error Connecting to server. Details: {0}".format(str(e)),
+                    f"Error Connecting to server. Details: {e!s}",
                 ),
                 None,
             )
@@ -219,7 +215,6 @@ class VaronisSaasConnector(BaseConnector):
         return self._process_response(resp, action_result)
 
     def _make_search_call(self, action_result, query: SearchRequest, count: int, page: int = 1) -> RetVal:
-
         ret_val, results = self._make_rest_call(
             action_result=action_result,
             url_suffix=VDSP_SEARCH_ENDPOINT,
@@ -246,7 +241,7 @@ class VaronisSaasConnector(BaseConnector):
 
         return ret_val, results
 
-    def _authorize(self, api_key: str) -> Dict[str, Any]:
+    def _authorize(self, api_key: str) -> dict[str, Any]:
         action_result = self.add_action_result(ActionResult({}))
         headers = {"x-api-key": api_key}
         ret_val, response = self._make_rest_call(
@@ -271,15 +266,15 @@ class VaronisSaasConnector(BaseConnector):
 
     def _get_alerts_payload(
         self,
-        threat_models: Optional[List[str]] = None,
+        threat_models: Optional[list[str]] = None,
         start_time: Optional[datetime] = None,
         end_time: Optional[datetime] = None,
-        device_names: Optional[List[str]] = None,
+        device_names: Optional[list[str]] = None,
         last_days: Optional[int] = None,
-        user_names: Optional[List[str]] = None,
+        user_names: Optional[list[str]] = None,
         from_ingest_time: Optional[datetime] = None,
-        alert_statuses: Optional[List[str]] = None,
-        alert_severities: Optional[List[str]] = None,
+        alert_statuses: Optional[list[str]] = None,
+        alert_severities: Optional[list[str]] = None,
         descending_order: bool = True,
     ) -> SearchRequest:
         """Get alerts parameters
@@ -337,7 +332,7 @@ class VaronisSaasConnector(BaseConnector):
 
         return payload
 
-    def _get_alerted_events_payload(self, alert_ids: List[str], descending_order: bool = True) -> SearchRequest:
+    def _get_alerted_events_payload(self, alert_ids: list[str], descending_order: bool = True) -> SearchRequest:
         """Get alerted events parameters
 
         :type alert_ids: ``List[str]``
@@ -349,7 +344,7 @@ class VaronisSaasConnector(BaseConnector):
         payload = create_alerted_events_request(alert_ids, descending_order)
         return payload
 
-    def _update_alert_status(self, action_result, query: Dict[str, Any]) -> bool:
+    def _update_alert_status(self, action_result, query: dict[str, Any]) -> bool:
         """Update alert status
 
         :type query: ``Dict[str, Any]``
@@ -403,7 +398,6 @@ class VaronisSaasConnector(BaseConnector):
 
     # HANDLERS
     def _handle_test_connectivity(self, param):
-
         action_result = self.add_action_result(ActionResult(dict(param)))
         self.save_progress("Connecting to endpoint")
 
@@ -419,7 +413,7 @@ class VaronisSaasConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_alerts(self, param):
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
@@ -522,7 +516,7 @@ class VaronisSaasConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_update_alert_status(self, param):
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
@@ -535,7 +529,7 @@ class VaronisSaasConnector(BaseConnector):
 
             status_id = ALERT_STATUSES[status.lower()]
 
-            query: Dict[str, Any] = {
+            query: dict[str, Any] = {
                 "AlertGuids": tools.try_convert(alert_id, lambda x: tools.multi_value_to_string_list(x)),
                 "closeReasonId": CLOSE_REASONS["none"],
                 "statusId": status_id,
@@ -554,7 +548,7 @@ class VaronisSaasConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_close_alert(self, param):
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         action_result = self.add_action_result(ActionResult(dict(param)))
 
@@ -572,7 +566,7 @@ class VaronisSaasConnector(BaseConnector):
             if len(alert_ids) == 0:
                 raise ValueError("alert id(s) not specified")
 
-            query: Dict[str, Any] = {
+            query: dict[str, Any] = {
                 "AlertGuids": alert_ids,
                 "closeReasonId": close_reason_id,
                 "statusId": ALERT_STATUSES["closed"],
@@ -591,7 +585,7 @@ class VaronisSaasConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_alerted_events(self, param):
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress(f"In action handler for: {self.get_action_identifier()}")
 
         action_result = self.add_action_result(ActionResult(dict(param)))
         try:
@@ -632,7 +626,6 @@ class VaronisSaasConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _on_poll(self, param):
-
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         config = self.get_config()
@@ -724,9 +717,7 @@ class VaronisSaasConnector(BaseConnector):
                 ret_val, message, container_responses = self.save_containers(containers)
 
                 for cr in container_responses:
-                    self.save_progress(
-                        "Save container returns, ret_val: {0}, message: {1}, id: {2}".format(cr["success"], cr["message"], cr["id"])
-                    )
+                    self.save_progress("Save container returns, ret_val: {}, message: {}, id: {}".format(cr["success"], cr["message"], cr["id"]))
 
                 if phantom.is_fail(ret_val):
                     self.save_progress(f"On poll Failed while saving containers. Message: {message}")
@@ -850,7 +841,6 @@ def main():
     verify = args.verify
 
     if username is not None and password is None:
-
         # User specified a username but not a password, so ask
         import getpass
 
@@ -883,7 +873,7 @@ def main():
             )
             session_id = r2.cookies["sessionid"]
         except Exception as e:
-            print(f"Unable to get session id from the platform. Error: {str(e)}")
+            print(f"Unable to get session id from the platform. Error: {e!s}")
             sys.exit(1)
 
     with open(args.input_test_json) as f:

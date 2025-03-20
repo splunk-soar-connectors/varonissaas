@@ -1,6 +1,6 @@
 # File: __init__.py
 #
-# Copyright (c) Varonis, 2024
+# Copyright (c) Varonis, 2024-2025
 #
 # This unpublished material is proprietary to Varonis SaaS. All
 # rights reserved. The methods and techniques described herein are
