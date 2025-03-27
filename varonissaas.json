@@ -932,15 +932,15 @@
             },
             {
                 "module": "pytz",
-                "input_file": "wheels/shared/pytz-2024.2-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/pytz-2025.2-py2.py3-none-any.whl"
             },
             {
                 "module": "regex",
-                "input_file": "wheels/py39/regex-2024.9.11-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
+                "input_file": "wheels/py39/regex-2024.11.6-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "tzlocal",
-                "input_file": "wheels/py3/tzlocal-5.2-py3-none-any.whl"
+                "input_file": "wheels/py3/tzlocal-5.3.1-py3-none-any.whl"
             }
         ]
     },
