@@ -1,0 +1,35 @@
+Splunk SOAR Varonis SaaS for SOAR
+Copyright (c) Varonis, 2024-2025
+
+Third Party Software Attributions:
+
+Name: dateparser
+Version: 1.1.7
+Author: Scrapinghub
+License: BSD
+
+Name: python-dateutil
+Version: 2.9.0.post0
+Author: Gustavo Niemeyer
+License: Dual License
+
+Name: pytz
+Version: 2025.2
+Author: Stuart Bishop
+License: MIT
+
+Name: regex
+Version: 2024.11.6
+Author: Matthew Barnett
+License: Apache Software License
+
+Name: six
+Version: 1.17.0
+Author: Benjamin Peterson
+License: MIT
+
+Name: tzlocal
+Version: 5.3.1
+Author: 
+License: MIT
+
