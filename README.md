@@ -1,7 +1,7 @@
 # Varonis SaaS for SOAR
 
 Publisher: Varonis \
-Connector Version: 1.0.3 \
+Connector Version: 1.0.4 \
 Product Vendor: Varonis \
 Product Name: Varonis SaaS \
 Minimum Product Version: 6.2.2
