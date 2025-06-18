@@ -37,11 +37,7 @@ TAlertSearchQueryBuilder = TypeVar("TAlertSearchQueryBuilder", bound="AlertSearc
 TSearchRequestBuilder = TypeVar("TSearchRequestBuilder", bound="SearchRequestBuilder")
 TEventSearchQueryBuilder = TypeVar("TEventSearchQueryBuilder", bound="EventSearchQueryBuilder")
 
-ALERT_STATUSES = {
-    "new": 1,
-    "under investigation": 2,
-    "closed": 3
-}
+ALERT_STATUSES = {"new": 1, "under investigation": 2, "closed": 3}
 ALERT_SEVERITIES = {"high": 0, "medium": 1, "low": 2}
 CLOSE_REASONS = {
     "none": 0,
