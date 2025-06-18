@@ -40,9 +40,7 @@ TEventSearchQueryBuilder = TypeVar("TEventSearchQueryBuilder", bound="EventSearc
 ALERT_STATUSES = {
     "new": 1,
     "under investigation": 2,
-    "closed": 3,
-    "action required": 4,
-    "auto-resolved": 5,
+    "closed": 3
 }
 ALERT_SEVERITIES = {"high": 0, "medium": 1, "low": 2}
 CLOSE_REASONS = {
