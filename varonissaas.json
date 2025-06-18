@@ -11,7 +11,7 @@
     "product_version_regex": ".*",
     "publisher": "Varonis",
     "license": "Copyright (c) Varonis, 2024-2025",
-    "app_version": "1.0.5",
+    "app_version": "1.0.4",
     "utctime_updated": "2025-04-14T18:56:08.111511Z",
     "package_name": "phantom_varonissaas",
     "main_module": "varonissaas_connector.py",
