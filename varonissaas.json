@@ -71,8 +71,7 @@
             "value_list": [
                 "New",
                 "Under investigation",
-                "Closed",
-                "Auto-Resolved"
+                "Closed"
             ],
             "order": 7
         }
