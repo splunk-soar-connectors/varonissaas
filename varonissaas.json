@@ -55,7 +55,8 @@
             "value_list": [
                 "Low",
                 "Medium",
-                "High"
+                "High",
+                "Informational"
             ],
             "default": "Low",
             "order": 5
