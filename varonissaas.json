@@ -936,7 +936,7 @@
             },
             {
                 "module": "regex",
-                "input_file": "wheels/py39/regex-2024.11.6-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py39/regex-2025.11.3-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "tzlocal",
@@ -956,7 +956,7 @@
             },
             {
                 "module": "regex",
-                "input_file": "wheels/py313/regex-2024.11.6-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py313/regex-2025.11.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "tzlocal",
