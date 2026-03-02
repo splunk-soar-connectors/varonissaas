@@ -1,4 +1,1 @@
 **Unreleased**
-
-* Added support for Informational severity level for Varonis alerts
-
