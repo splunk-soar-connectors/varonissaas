@@ -1,9 +1,9 @@
 # Varonis SaaS for SOAR
 
-Publisher: Varonis \
-Connector Version: 1.0.6 \
-Product Vendor: Varonis \
-Product Name: Varonis SaaS \
+Publisher: Varonis <br>
+Connector Version: 1.0.6 <br>
+Product Vendor: Varonis <br>
+Product Name: Varonis SaaS <br>
 Minimum Product Version: 6.2.2
 
 Varonis SaaS for Splunk SOAR
@@ -28,7 +28,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
 **base_url** | required | string | Varonis FQDN/IP the integration should connect to |
 **api_key** | required | password | Varonis API Key |
-**verify_server_cert** | optional | boolean | Verify the server certificate. Disable only for temporary troubleshooting with a trusted endpoint. |
+**verify_server_cert** | optional | boolean | Whether to verify the server certificate. Disable only for temporary troubleshooting with a trusted endpoint. |
 **ingest_artifacts** | required | boolean | Should artifacts be ingested |
 **ingest_period** | required | string | Alert Retrieval Start (Days Ago) |
 **severity** | optional | string | Alert Severity |
@@ -37,18 +37,18 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
-[get alerts](#action-get-alerts) - Get alerts from Varonis SaaS \
-[update alert status](#action-update-alert-status) - Update Varonis alert status command \
-[close alert](#action-close-alert) - Close Varonis alert command \
-[get alerted events](#action-get-alerted-events) - Get alerted events from Varonis SaaS \
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
+[get alerts](#action-get-alerts) - Get alerts from Varonis SaaS <br>
+[update alert status](#action-update-alert-status) - Update Varonis alert status command <br>
+[close alert](#action-close-alert) - Close Varonis alert command <br>
+[get alerted events](#action-get-alerted-events) - Get alerted events from Varonis SaaS <br>
 [on poll](#action-on-poll) - Callback action for the on_poll ingest functionality
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -63,7 +63,7 @@ No Output
 
 Get alerts from Varonis SaaS
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -132,7 +132,7 @@ summary.total_objects_successful | numeric | | |
 
 Update Varonis alert status command
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -159,7 +159,7 @@ summary.total_objects_successful | numeric | | |
 
 Close Varonis alert command
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -186,7 +186,7 @@ summary.total_objects_successful | numeric | | |
 
 Get alerted events from Varonis SaaS
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -250,7 +250,7 @@ summary.total_objects_successful | numeric | | |
 
 Callback action for the on_poll ingest functionality
 
-Type: **ingest** \
+Type: **ingest** <br>
 Read only: **True**
 
 The default start_time is the past 5 days. The default end_time is now.
@@ -273,7 +273,7 @@ ______________________________________________________________________
 
 Auto-generated Splunk SOAR Connector documentation.
 
-Copyright 2025 Splunk Inc.
+Copyright 2026 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
