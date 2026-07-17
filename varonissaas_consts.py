@@ -24,6 +24,7 @@ VDSP_JSON_BASE_URL_KEY = "base_url"
 VDSP_AUTH_DATA = "grant_type=client_credentials"
 VDSP_SCRT = "api_key"
 VDSP_ACCESS_TOKEN_KEY = "access_token"
+VDSP_ACCESS_TOKEN_IS_ENCRYPTED = "access_token_is_encrypted"
 VDSP_TOKEN_TYPE_KEY = "token_type"
 VDSP_EXPIRES_IN_KEY = "expires_in"
 VDSP_REQUEST_TIMEOUT = 120
