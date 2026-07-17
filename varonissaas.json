@@ -32,8 +32,9 @@
             "order": 1
         },
         "verify_server_cert": {
-            "description": "Whether to verify the server certificate",
+            "description": "Whether to verify the server certificate. Disable only for temporary troubleshooting with a trusted endpoint.",
             "data_type": "boolean",
+            "default": true,
             "order": 2
         },
         "ingest_artifacts": {

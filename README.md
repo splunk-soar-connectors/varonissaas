@@ -28,7 +28,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
 **base_url** | required | string | Varonis FQDN/IP the integration should connect to |
 **api_key** | required | password | Varonis API Key |
-**verify_server_cert** | optional | boolean | Whether to verify the server certificate |
+**verify_server_cert** | optional | boolean | Verify the server certificate. Disable only for temporary troubleshooting with a trusted endpoint. |
 **ingest_artifacts** | required | boolean | Should artifacts be ingested |
 **ingest_period** | required | string | Alert Retrieval Start (Days Ago) |
 **severity** | optional | string | Alert Severity |

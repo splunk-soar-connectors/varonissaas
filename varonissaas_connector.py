@@ -773,7 +773,7 @@ class VaronisSaasConnector(BaseConnector):
         """
 
         self._base_url = config.get(VDSP_JSON_BASE_URL_KEY)
-        self._verify = config.get("verify_server_cert", False)
+        self._verify = config.get("verify_server_cert", True)
         self._session = requests.Session()
 
         try:
