@@ -1,6 +1,6 @@
 # File: varonissaas_test.py
 #
-# Copyright (c) Varonis, 2024-2025
+# Copyright (c) Varonis, 2024-2026
 #
 # This unpublished material is proprietary to Varonis SaaS. All
 # rights reserved. The methods and techniques described herein are
@@ -20,8 +20,9 @@
 # and limitations under the License.
 
 import json
+import time
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from phantom.action_result import ActionResult
 
@@ -34,6 +35,102 @@ class VaronisSaaSTest(unittest.TestCase):
     def setUp(self) -> None:
         self.connector = VaronisSaasConnector()
         self.connector._base_url = "https://test.com"
+
+    def test_initialize_enables_tls_verification_by_default(self):
+        self.connector.load_state = MagicMock(
+            return_value={
+                VDSP_ACCESS_TOKEN_KEY: "cached-token",
+                VDSP_TOKEN_TYPE_KEY: "Bearer",
+                VDSP_EXPIRES_IN_KEY: int(time.time()) + 3600,
+            }
+        )
+        self.connector.get_config = MagicMock(return_value={VDSP_JSON_BASE_URL_KEY: "https://test.com", VDSP_SCRT: "api-key"})
+
+        self.assertTrue(self.connector.initialize())
+
+        self.assertTrue(self.connector._verify)
+
+    def test_initialize_keeps_explicit_tls_opt_out(self):
+        self.connector.load_state = MagicMock(
+            return_value={
+                VDSP_ACCESS_TOKEN_KEY: "cached-token",
+                VDSP_TOKEN_TYPE_KEY: "Bearer",
+                VDSP_EXPIRES_IN_KEY: int(time.time()) + 3600,
+            }
+        )
+        self.connector.get_config = MagicMock(
+            return_value={VDSP_JSON_BASE_URL_KEY: "https://test.com", VDSP_SCRT: "api-key", "verify_server_cert": False}
+        )
+
+        self.assertTrue(self.connector.initialize())
+
+        self.assertFalse(self.connector._verify)
+
+    @patch("varonissaas_connector.encryption_helper")
+    def test_finalize_encrypts_legacy_access_token_state(self, encryption_helper):
+        state = {
+            VDSP_ACCESS_TOKEN_KEY: "legacy-token",
+            VDSP_TOKEN_TYPE_KEY: "Bearer",
+            VDSP_EXPIRES_IN_KEY: int(time.time()) + 3600,
+        }
+        self.connector.load_state = MagicMock(return_value=state)
+        self.connector.get_config = MagicMock(return_value={VDSP_JSON_BASE_URL_KEY: "https://test.com", VDSP_SCRT: "api-key"})
+        self.connector.get_asset_id = MagicMock(return_value=42)
+        self.connector.save_state = MagicMock()
+        encryption_helper.encrypt.return_value = "encrypted-token"
+
+        self.assertTrue(self.connector.initialize())
+        self.assertTrue(self.connector.finalize())
+
+        encryption_helper.encrypt.assert_called_once_with("legacy-token", 42)
+        self.assertTrue(state[VDSP_ACCESS_TOKEN_IS_ENCRYPTED])
+        self.assertEqual(state[VDSP_ACCESS_TOKEN_KEY], "encrypted-token")
+        self.connector.save_state.assert_called_once_with(state)
+
+    @patch("varonissaas_connector.encryption_helper")
+    def test_initialize_decrypts_persisted_access_token(self, encryption_helper):
+        state = {
+            VDSP_ACCESS_TOKEN_KEY: "encrypted-token",
+            VDSP_ACCESS_TOKEN_IS_ENCRYPTED: True,
+            VDSP_TOKEN_TYPE_KEY: "Bearer",
+            VDSP_EXPIRES_IN_KEY: int(time.time()) + 3600,
+        }
+        self.connector.load_state = MagicMock(return_value=state)
+        self.connector.get_config = MagicMock(return_value={VDSP_JSON_BASE_URL_KEY: "https://test.com", VDSP_SCRT: "api-key"})
+        self.connector.get_asset_id = MagicMock(return_value=42)
+        encryption_helper.decrypt.return_value = "decrypted-token"
+
+        self.assertTrue(self.connector.initialize())
+
+        encryption_helper.decrypt.assert_called_once_with("encrypted-token", 42)
+        self.assertEqual(self.connector._headers["Authorization"], "Bearer decrypted-token")
+
+    @patch("varonissaas_connector.encryption_helper")
+    def test_initialize_refreshes_token_after_decryption_failure(self, encryption_helper):
+        state = {
+            VDSP_ACCESS_TOKEN_KEY: "encrypted-token",
+            VDSP_ACCESS_TOKEN_IS_ENCRYPTED: True,
+            VDSP_TOKEN_TYPE_KEY: "Bearer",
+            VDSP_EXPIRES_IN_KEY: int(time.time()) + 3600,
+        }
+        self.connector.load_state = MagicMock(return_value=state)
+        self.connector.get_config = MagicMock(return_value={VDSP_JSON_BASE_URL_KEY: "https://test.com", VDSP_SCRT: "api-key"})
+        self.connector.get_asset_id = MagicMock(return_value=42)
+        encryption_helper.decrypt.side_effect = ValueError("bad ciphertext")
+
+        def authorize(_):
+            self.connector._access_token = "fresh-token"
+            state[VDSP_TOKEN_TYPE_KEY] = "Bearer"
+            state[VDSP_EXPIRES_IN_KEY] = int(time.time()) + 3600
+
+        self.connector._authorize = MagicMock(side_effect=authorize)
+
+        self.assertTrue(self.connector.initialize())
+
+        self.connector._authorize.assert_called_once_with("api-key")
+        self.assertNotIn(VDSP_ACCESS_TOKEN_KEY, state)
+        self.assertNotIn(VDSP_ACCESS_TOKEN_IS_ENCRYPTED, state)
+        self.assertEqual(self.connector._headers["Authorization"], "Bearer fresh-token")
 
     def test_handle_get_alerts_empty_param(self):
         # Arrange

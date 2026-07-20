@@ -1,6 +1,6 @@
 # File: varonissaas_connector.py
 #
-# Copyright (c) Varonis, 2024-2025
+# Copyright (c) Varonis, 2024-2026
 #
 # This unpublished material is proprietary to Varonis SaaS. All
 # rights reserved. The methods and techniques described herein are
@@ -28,6 +28,7 @@ from datetime import datetime, timedelta
 from typing import Any, Optional
 
 # Phantom App imports
+import encryption_helper
 import phantom.app as phantom
 import requests
 from bs4 import BeautifulSoup
@@ -60,6 +61,7 @@ class VaronisSaasConnector(BaseConnector):
         self._session = None
         self._verify = None
         self._headers = None
+        self._access_token = None
 
         # Variable to hold a base_url in case the app makes REST calls
         # Do note that the app json defines the asset config, so please
@@ -256,7 +258,7 @@ class VaronisSaasConnector(BaseConnector):
             self.save_progress(f"Faild to authorize on {VDSP_AUTH_ENDPOINT} endpoint.")
             return action_result.get_status()
 
-        self._state[VDSP_ACCESS_TOKEN_KEY] = response[VDSP_ACCESS_TOKEN_KEY]
+        self._access_token = response[VDSP_ACCESS_TOKEN_KEY]
         self._state[VDSP_TOKEN_TYPE_KEY] = response[VDSP_TOKEN_TYPE_KEY]
         self._state[VDSP_EXPIRES_IN_KEY] = int(time.time()) + response[VDSP_EXPIRES_IN_KEY] - VDSP_REQUEST_TIMEOUT
 
@@ -773,7 +775,7 @@ class VaronisSaasConnector(BaseConnector):
         """
 
         self._base_url = config.get(VDSP_JSON_BASE_URL_KEY)
-        self._verify = config.get("verify_server_cert", False)
+        self._verify = config.get("verify_server_cert", True)
         self._session = requests.Session()
 
         try:
@@ -799,11 +801,22 @@ class VaronisSaasConnector(BaseConnector):
         api_key = config.get(VDSP_SCRT)
 
         try:
+            self._access_token = self._state.get(VDSP_ACCESS_TOKEN_KEY)
+            if self._state.get(VDSP_ACCESS_TOKEN_IS_ENCRYPTED) and self._access_token:
+                try:
+                    self._access_token = encryption_helper.decrypt(self._access_token, self.get_asset_id())
+                except Exception as e:
+                    self.error_print("Unable to decrypt stored access token", e)
+                    self._access_token = None
+                    self._state.pop(VDSP_ACCESS_TOKEN_KEY, None)
+                    self._state.pop(VDSP_ACCESS_TOKEN_IS_ENCRYPTED, None)
+                    self._state[VDSP_EXPIRES_IN_KEY] = -1
+
             state = self._state.get(VDSP_EXPIRES_IN_KEY, -1)
-            if state < int(time.time()):
+            if state < int(time.time()) or not self._access_token:
                 self._authorize(api_key)
 
-            self._headers = {"Authorization": f"{self._state[VDSP_TOKEN_TYPE_KEY]} {self._state[VDSP_ACCESS_TOKEN_KEY]}"}
+            self._headers = {"Authorization": f"{self._state[VDSP_TOKEN_TYPE_KEY]} {self._access_token}"}
         except Exception as e:
             self.error_print("Authorization", e)
             return phantom.APP_ERROR
@@ -811,6 +824,17 @@ class VaronisSaasConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
     def finalize(self):
+        if self._access_token:
+            try:
+                self._state[VDSP_ACCESS_TOKEN_KEY] = encryption_helper.encrypt(self._access_token, self.get_asset_id())
+                self._state[VDSP_ACCESS_TOKEN_IS_ENCRYPTED] = True
+            except Exception as e:
+                self.error_print("Unable to encrypt access token", e)
+                return phantom.APP_ERROR
+        else:
+            self._state.pop(VDSP_ACCESS_TOKEN_KEY, None)
+            self._state.pop(VDSP_ACCESS_TOKEN_IS_ENCRYPTED, None)
+
         self.save_state(self._state)
         return phantom.APP_SUCCESS
 
