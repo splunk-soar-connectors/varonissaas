@@ -1,4 +1,1 @@
 **Unreleased**
-
-* Enable TLS certificate verification by default.
-* Encrypt persisted Varonis access tokens.
