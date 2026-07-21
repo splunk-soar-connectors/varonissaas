@@ -245,7 +245,7 @@ class VaronisSaasConnector(BaseConnector):
 
     def _authorize(self, api_key: str) -> dict[str, Any]:
         action_result = self.add_action_result(ActionResult({}))
-        headers = {"x-api-key": api_key}
+        headers = {"x-api-key": api_key, "Content-Type": "application/x-www-form-urlencoded"}
         ret_val, response = self._make_rest_call(
             action_result=action_result,
             method="POST",
