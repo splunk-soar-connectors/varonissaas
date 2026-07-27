@@ -24,7 +24,7 @@
 import json
 import sys
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Optional
 
 # Phantom App imports
@@ -43,7 +43,8 @@ from varonissaas_consts import *
 from varonissaas_search import *
 
 
-REQUEST_RETRIES = 30
+REQUEST_RETRIES = 8
+REQUEST_BACKOFF_FACTOR = 0.5
 HTTP_STATUS_WHITE_LIST = [304, 206]
 
 
@@ -124,6 +125,10 @@ class VaronisSaasConnector(BaseConnector):
             action_result.add_debug_data({"r_status_code": r.status_code})
             action_result.add_debug_data({"r_text": r.text})
             action_result.add_debug_data({"r_headers": r.headers})
+
+        # Trace every response (method, url, status) without logging headers or
+        # the request/response body, so credentials are never written to logs.
+        self.debug_print("REST response", f"{r.request.method} {r.url} -> {r.status_code}")
 
         # Process each 'Content-Type' of response separately
 
@@ -206,6 +211,7 @@ class VaronisSaasConnector(BaseConnector):
                 **kwargs,
             )
         except Exception as e:
+            self.error_print("Error connecting to server.", e)
             return RetVal(
                 action_result.set_status(
                     phantom.APP_ERROR,
@@ -225,10 +231,12 @@ class VaronisSaasConnector(BaseConnector):
         )
 
         if phantom.is_fail(ret_val):
+            self.error_print(f"Failed to create search query. Error: {action_result.get_message()}")
             self.save_progress("Faild to make search query call.")
             return action_result.get_status()
 
         search_result_location = next(filter(lambda x: (x["dataType"] == "rows"), results))["location"]
+        self.debug_print("Search result location", search_result_location)
 
         ret_val, results = self._make_rest_call(
             action_result=action_result,
@@ -238,6 +246,9 @@ class VaronisSaasConnector(BaseConnector):
         )
 
         if phantom.is_fail(ret_val):
+            self.error_print(
+                f"Failed to get search results. Location: {search_result_location}. Error: {action_result.get_message()}"
+            )
             self.save_progress("Faild to get results of search query call.")
             return action_result.get_status()
 
@@ -545,6 +556,7 @@ class VaronisSaasConnector(BaseConnector):
 
             action_result.add_data(response)
         except Exception as ex:
+            self.error_print("Exception occurred while updating alert status.", ex)
             action_result.set_status(phantom.APP_ERROR, str(ex))
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -582,6 +594,7 @@ class VaronisSaasConnector(BaseConnector):
 
             action_result.add_data(response)
         except Exception as ex:
+            self.error_print("Exception occurred while closing alert.", ex)
             action_result.set_status(phantom.APP_ERROR, str(ex))
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -623,6 +636,7 @@ class VaronisSaasConnector(BaseConnector):
 
             action_result.update_summary({"events_count": len(results)})
         except Exception as ex:
+            self.error_print("Exception occurred while getting alerted events.", ex)
             action_result.set_status(phantom.APP_ERROR, str(ex))
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -646,6 +660,21 @@ class VaronisSaasConnector(BaseConnector):
             container_count = param.get(phantom.APP_JSON_CONTAINER_COUNT, float("inf"))
             start_time = tools.numeric_to_date(ingest_period)
             artifact_count = param.get(phantom.APP_JSON_ARTIFACT_COUNT, VDSP_MAX_ALERTED_EVENTS)
+
+            # Cap the ingestion window so a single poll never covers more than
+            # VDSP_MAX_INGEST_INTERVAL_DAYS, no matter how large the configured
+            # ingest period is or how far the ingest cursor has fallen behind.
+            # start_time is a naive UTC datetime (dateparser), while
+            # last_fetched_time is tz-aware (parsed with %z), so each is clamped
+            # against a matching-awareness "now".
+            earliest_start_naive = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=VDSP_MAX_INGEST_INTERVAL_DAYS)
+            if start_time is None or start_time < earliest_start_naive:
+                start_time = earliest_start_naive
+
+            if last_fetched_time is not None:
+                earliest_start_aware = datetime.now(timezone.utc) - timedelta(days=VDSP_MAX_INGEST_INTERVAL_DAYS)
+                if last_fetched_time < earliest_start_aware:
+                    last_fetched_time = earliest_start_aware
 
             self.save_progress(f"Start ingesting data for interval from {start_time}, amount {container_count}")
 
@@ -729,6 +758,7 @@ class VaronisSaasConnector(BaseConnector):
             action_result.update_summary({"alerts_count": len(alert_results)})
 
         except Exception as e:
+            self.error_print("Exception occurred during polling.", e)
             return action_result.set_status(phantom.APP_ERROR, str(e))
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -787,6 +817,7 @@ class VaronisSaasConnector(BaseConnector):
                 connect=REQUEST_RETRIES,
                 status=REQUEST_RETRIES,
                 status_forcelist=HTTP_STATUS_WHITE_LIST,
+                backoff_factor=REQUEST_BACKOFF_FACTOR,
                 raise_on_status=False,
                 raise_on_redirect=False,
                 **whitelist_kawargs,  # type: ignore[arg-type]

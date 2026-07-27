@@ -22,11 +22,12 @@
 import json
 import time
 import unittest
+from datetime import datetime, timedelta, timezone
 from unittest.mock import MagicMock, patch
 
 from phantom.action_result import ActionResult
 
-from varonissaas_connector import VaronisSaasConnector
+from varonissaas_connector import REQUEST_BACKOFF_FACTOR, REQUEST_RETRIES, VaronisSaasConnector
 from varonissaas_consts import *
 from varonissaas_search import ALERT_STATUSES, CLOSE_REASONS
 
@@ -284,6 +285,66 @@ class VaronisSaaSTest(unittest.TestCase):
             json=json_data,
         )
         self.assertTrue(status)
+
+    def test_initialize_configures_retry_backoff(self):
+        self.connector.load_state = MagicMock(
+            return_value={
+                VDSP_ACCESS_TOKEN_KEY: "cached-token",
+                VDSP_TOKEN_TYPE_KEY: "Bearer",
+                VDSP_EXPIRES_IN_KEY: int(time.time()) + 3600,
+            }
+        )
+        self.connector.get_config = MagicMock(return_value={VDSP_JSON_BASE_URL_KEY: "https://test.com", VDSP_SCRT: "api-key"})
+
+        self.assertTrue(self.connector.initialize())
+
+        retry = self.connector._session.get_adapter("https://test.com").max_retries
+        self.assertEqual(retry.total, REQUEST_RETRIES)
+        self.assertEqual(retry.backoff_factor, REQUEST_BACKOFF_FACTOR)
+        self.assertIn(304, retry.status_forcelist)
+        self.assertIn(206, retry.status_forcelist)
+
+    def test_on_poll_caps_activity_window_to_max_interval(self):
+        # A large ingest_period must be clamped so the activity window never
+        # spans more than VDSP_MAX_INGEST_INTERVAL_DAYS.
+        recent_cursor = (datetime.now(timezone.utc) - timedelta(days=2)).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+        self.connector._state = {VDSP_LAST_FETCH_TIME: recent_cursor}
+        self.connector.get_config = MagicMock(
+            return_value={VDSP_INGEST_PERIOD_KEY: "30 day", VDSP_INGEST_ARTIFACTS_FLAG: False}
+        )
+        action_result = ActionResult({})
+        self.connector.add_action_result = MagicMock(return_value=action_result)
+
+        captured = {}
+        self.connector._get_alerts_payload = MagicMock(side_effect=lambda **kwargs: captured.update(kwargs) or MagicMock())
+        self.connector._make_search_call = MagicMock(return_value=(True, {"hasResults": False}))
+
+        status = self.connector._on_poll({})
+
+        self.assertTrue(status)
+        earliest = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=VDSP_MAX_INGEST_INTERVAL_DAYS)
+        self.assertAlmostEqual(captured["start_time"], earliest, delta=timedelta(seconds=60))
+
+    def test_on_poll_caps_ingest_cursor_to_max_interval(self):
+        # A cursor that has fallen far behind must be clamped so the ingest-time
+        # window never spans more than VDSP_MAX_INGEST_INTERVAL_DAYS.
+        old_cursor = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+        self.connector._state = {VDSP_LAST_FETCH_TIME: old_cursor}
+        self.connector.get_config = MagicMock(
+            return_value={VDSP_INGEST_PERIOD_KEY: "1 day", VDSP_INGEST_ARTIFACTS_FLAG: False}
+        )
+        action_result = ActionResult({})
+        self.connector.add_action_result = MagicMock(return_value=action_result)
+
+        captured = {}
+        self.connector._get_alerts_payload = MagicMock(side_effect=lambda **kwargs: captured.update(kwargs) or MagicMock())
+        self.connector._make_search_call = MagicMock(return_value=(True, {"hasResults": False}))
+
+        status = self.connector._on_poll({})
+
+        self.assertTrue(status)
+        earliest = datetime.now(timezone.utc) - timedelta(days=VDSP_MAX_INGEST_INTERVAL_DAYS)
+        self.assertAlmostEqual(captured["from_ingest_time"], earliest, delta=timedelta(seconds=60))
 
 
 if __name__ == "__main__":
