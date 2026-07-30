@@ -660,6 +660,7 @@ class VaronisSaasConnector(BaseConnector):
             container_count = param.get(phantom.APP_JSON_CONTAINER_COUNT, float("inf"))
             start_time = tools.numeric_to_date(ingest_period)
             artifact_count = param.get(phantom.APP_JSON_ARTIFACT_COUNT, VDSP_MAX_ALERTED_EVENTS)
+            artifact_count = min(tools.try_convert(artifact_count, int) or VDSP_MAX_ALERTED_EVENTS, VDSP_MAX_ALERTED_EVENTS)
 
             # Cap the ingestion window so a single poll never covers more than
             # VDSP_MAX_INGEST_INTERVAL_DAYS, no matter how large the configured
