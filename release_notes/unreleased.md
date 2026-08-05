@@ -5,3 +5,4 @@
 * Cap the on poll ingestion window to a maximum of 7 days.
 * Declare support for Python 3.13 in addition to Python 3.9.
 * Fix scheduled polling failure by capping the alerted events count to a valid range.
+* Fix on poll failure when an ingested alert has no associated alerted events.

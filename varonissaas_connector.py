@@ -740,7 +740,7 @@ class VaronisSaasConnector(BaseConnector):
                     container = self._create_container(alert_res)
 
                     if dict_events:
-                        artifacts = list(map(self._create_artifact, dict_events[alert_res.ID]))
+                        artifacts = list(map(self._create_artifact, dict_events.get(alert_res.ID, [])))
                         container["artifacts"] = artifacts
 
                     containers.append(container)
