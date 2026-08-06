@@ -246,9 +246,7 @@ class VaronisSaasConnector(BaseConnector):
         )
 
         if phantom.is_fail(ret_val):
-            self.error_print(
-                f"Failed to get search results. Location: {search_result_location}. Error: {action_result.get_message()}"
-            )
+            self.error_print(f"Failed to get search results. Location: {search_result_location}. Error: {action_result.get_message()}")
             self.save_progress("Faild to get results of search query call.")
             return action_result.get_status()
 

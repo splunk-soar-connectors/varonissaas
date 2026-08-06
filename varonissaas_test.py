@@ -309,9 +309,7 @@ class VaronisSaaSTest(unittest.TestCase):
         # spans more than VDSP_MAX_INGEST_INTERVAL_DAYS.
         recent_cursor = (datetime.now(timezone.utc) - timedelta(days=2)).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
         self.connector._state = {VDSP_LAST_FETCH_TIME: recent_cursor}
-        self.connector.get_config = MagicMock(
-            return_value={VDSP_INGEST_PERIOD_KEY: "30 day", VDSP_INGEST_ARTIFACTS_FLAG: False}
-        )
+        self.connector.get_config = MagicMock(return_value={VDSP_INGEST_PERIOD_KEY: "30 day", VDSP_INGEST_ARTIFACTS_FLAG: False})
         action_result = ActionResult({})
         self.connector.add_action_result = MagicMock(return_value=action_result)
 
@@ -330,9 +328,7 @@ class VaronisSaaSTest(unittest.TestCase):
         # window never spans more than VDSP_MAX_INGEST_INTERVAL_DAYS.
         old_cursor = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
         self.connector._state = {VDSP_LAST_FETCH_TIME: old_cursor}
-        self.connector.get_config = MagicMock(
-            return_value={VDSP_INGEST_PERIOD_KEY: "1 day", VDSP_INGEST_ARTIFACTS_FLAG: False}
-        )
+        self.connector.get_config = MagicMock(return_value={VDSP_INGEST_PERIOD_KEY: "1 day", VDSP_INGEST_ARTIFACTS_FLAG: False})
         action_result = ActionResult({})
         self.connector.add_action_result = MagicMock(return_value=action_result)
 
