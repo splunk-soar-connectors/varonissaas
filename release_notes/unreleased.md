@@ -6,3 +6,4 @@
 * Declare support for Python 3.13 in addition to Python 3.9.
 * Fix scheduled polling failure by capping the alerted events count to a valid range.
 * Fix on poll failure when an ingested alert has no associated alerted events.
+* Use a pipe ("|") to separate multiple values in action and asset fields so names containing commas are preserved.

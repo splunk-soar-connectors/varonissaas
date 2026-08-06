@@ -30,6 +30,7 @@ from phantom.action_result import ActionResult
 from varonissaas_connector import REQUEST_BACKOFF_FACTOR, REQUEST_RETRIES, VaronisSaasConnector
 from varonissaas_consts import *
 from varonissaas_search import ALERT_STATUSES, CLOSE_REASONS
+from varonissaas_tools import multi_value_to_string_list
 
 
 class VaronisSaaSTest(unittest.TestCase):
@@ -174,13 +175,13 @@ class VaronisSaaSTest(unittest.TestCase):
             "page": 2,
             "max_results": VDSP_MAX_ALERTS,
             "descending_order": False,
-            "threat_model_name": "Capture Access request for varadm,Capture Account authentication for varadm,Capture SYSTEM",
-            "alert_status": "New,Closed",
+            "threat_model_name": "Capture Access request for varadm|Capture Account authentication for varadm|Capture SYSTEM",
+            "alert_status": "New|Closed",
             "end_time": "2023-12-30T13:59:00+02:00",
             "start_time": "2023-12-01T13:00:00+02:00",
-            "alert_severity": "High, Low, Medium",
-            "device_name": "dev3cf41col01,dev3cf41dh",
-            "user_name": "varadm,SYSTEM",
+            "alert_severity": "High| Low| Medium",
+            "device_name": "dev3cf41col01|dev3cf41dh",
+            "user_name": "varadm|SYSTEM",
             "last_days": "2",
         }
         action_result = ActionResult(param)
@@ -210,7 +211,7 @@ class VaronisSaaSTest(unittest.TestCase):
             expected_result = json.load(file)
 
         self.connector._make_search_call = MagicMock(return_value=(True, search_response))
-        param = {"alert_id": "EE53B604-087A-499C-88F5-7E97ABA5BD9E,A08C35C2-731A-4EA1-B350-11204EACA972"}
+        param = {"alert_id": "EE53B604-087A-499C-88F5-7E97ABA5BD9E|A08C35C2-731A-4EA1-B350-11204EACA972"}
         action_result = ActionResult(param)
         self.connector.add_action_result = MagicMock(return_value=action_result)
 
@@ -235,7 +236,7 @@ class VaronisSaaSTest(unittest.TestCase):
     def test_handle_update_alert_status(self):
         self.connector._make_rest_call = MagicMock()
         param = {
-            "alert_id": "232c60e4-0f74-4f86-998b-8752a41f7910,176ee376-252c-44e0-a2d6-f8c4443ddec1",
+            "alert_id": "232c60e4-0f74-4f86-998b-8752a41f7910|176ee376-252c-44e0-a2d6-f8c4443ddec1",
             "status": "new",
         }
         action_result = ActionResult(param)
@@ -262,7 +263,7 @@ class VaronisSaaSTest(unittest.TestCase):
     def test_handle_close_alert(self):
         self.connector._make_rest_call = MagicMock()
         param = {
-            "alert_id": "232c60e4-0f74-4f86-998b-8752a41f7910,176ee376-252c-44e0-a2d6-f8c4443ddec1",
+            "alert_id": "232c60e4-0f74-4f86-998b-8752a41f7910|176ee376-252c-44e0-a2d6-f8c4443ddec1",
             "close_reason": "other",
         }
         action_result = ActionResult(param)
@@ -341,6 +342,40 @@ class VaronisSaaSTest(unittest.TestCase):
         self.assertTrue(status)
         earliest = datetime.now(timezone.utc) - timedelta(days=VDSP_MAX_INGEST_INTERVAL_DAYS)
         self.assertAlmostEqual(captured["from_ingest_time"], earliest, delta=timedelta(seconds=60))
+
+
+class MultiValueToStringListTest(unittest.TestCase):
+    def test_splits_on_pipe(self):
+        self.assertEqual(
+            multi_value_to_string_list("New|Closed|Open"),
+            ["New", "Closed", "Open"],
+        )
+
+    def test_strips_surrounding_whitespace(self):
+        self.assertEqual(
+            multi_value_to_string_list("High| Low | Medium"),
+            ["High", "Low", "Medium"],
+        )
+
+    def test_preserves_commas_inside_values(self):
+        # Names may legitimately contain commas; only the pipe separates values.
+        self.assertEqual(
+            multi_value_to_string_list("Doe, John|Roe, Jane"),
+            ["Doe, John", "Roe, Jane"],
+        )
+
+    def test_single_value_returns_single_item_list(self):
+        self.assertEqual(multi_value_to_string_list("Capture SYSTEM"), ["Capture SYSTEM"])
+
+    def test_list_input_is_returned_unchanged(self):
+        self.assertEqual(multi_value_to_string_list(["New", "Closed"]), ["New", "Closed"])
+
+    def test_empty_input_returns_empty_list(self):
+        self.assertEqual(multi_value_to_string_list(""), [])
+        self.assertEqual(multi_value_to_string_list(None), [])
+
+    def test_custom_separator_is_respected(self):
+        self.assertEqual(multi_value_to_string_list("a,b,c", separator=","), ["a", "b", "c"])
 
 
 if __name__ == "__main__":
