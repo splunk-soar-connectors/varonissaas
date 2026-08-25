@@ -116,7 +116,7 @@ def numeric_to_date(interval: Any, is_utc=True) -> Optional[datetime]:
     return arg_to_datetime(interval, is_utc)
 
 
-def multi_value_to_string_list(arg, separator="|"):
+def multi_value_to_string_list(arg, separator=None):
     """
     Converts a string representation of args to a python list
 
@@ -124,7 +124,9 @@ def multi_value_to_string_list(arg, separator="|"):
     :param arg: Args to be converted (required)
 
     :type separator: ``str``
-    :param separator: A string separator to separate the strings, the default is a pipe ("|").
+    :param separator: A string separator to separate the strings. When omitted, a pipe
+        ("|") is used if the value contains one, otherwise the value is split on a comma
+        so that assets and playbooks created before the pipe separator keep working.
 
     :return: A python list of args
     :rtype: ``list``
@@ -134,6 +136,8 @@ def multi_value_to_string_list(arg, separator="|"):
     if isinstance(arg, list):
         return arg
     if isinstance(arg, str):
+        if separator is None:
+            separator = "|" if "|" in arg else ","
         return [s.strip() for s in arg.split(separator)]
     return [arg]
 

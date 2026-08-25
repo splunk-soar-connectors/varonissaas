@@ -343,6 +343,56 @@ class VaronisSaaSTest(unittest.TestCase):
         earliest = datetime.now(timezone.utc) - timedelta(days=VDSP_MAX_INGEST_INTERVAL_DAYS)
         self.assertAlmostEqual(captured["from_ingest_time"], earliest, delta=timedelta(seconds=60))
 
+    def test_handle_update_alert_status_reports_failure_on_exception(self):
+        # A failure raised inside the handler must not be reported as success.
+        self.connector._make_rest_call = MagicMock()
+        param = {"alert_id": "232c60e4-0f74-4f86-998b-8752a41f7910", "status": "not-a-status"}
+        action_result = ActionResult(param)
+        self.connector.add_action_result = MagicMock(return_value=action_result)
+
+        status = self.connector._handle_update_alert_status(param)
+
+        self.assertFalse(status)
+        self.connector._make_rest_call.assert_not_called()
+
+    def test_handle_close_alert_reports_failure_on_exception(self):
+        self.connector._make_rest_call = MagicMock()
+        param = {"alert_id": "232c60e4-0f74-4f86-998b-8752a41f7910", "close_reason": "not-a-reason"}
+        action_result = ActionResult(param)
+        self.connector.add_action_result = MagicMock(return_value=action_result)
+
+        status = self.connector._handle_close_alert(param)
+
+        self.assertFalse(status)
+        self.connector._make_rest_call.assert_not_called()
+
+    def test_handle_get_alerted_events_reports_failure_on_exception(self):
+        self.connector._make_search_call = MagicMock()
+        param = {"alert_id": "EE53B604-087A-499C-88F5-7E97ABA5BD9E", "max_results": "not-a-number"}
+        action_result = ActionResult(param)
+        self.connector.add_action_result = MagicMock(return_value=action_result)
+
+        status = self.connector._handle_get_alerted_events(param)
+
+        self.assertFalse(status)
+        self.connector._make_search_call.assert_not_called()
+
+    @patch("varonissaas_connector.create_alert_request")
+    def test_get_alerts_payload_matches_ingest_window_awareness(self, create_alert_request):
+        # Both ends of the ingest-time window must share the same tzinfo awareness,
+        # otherwise the range is interpreted in different timezones.
+        aware_start = datetime.now(timezone.utc) - timedelta(days=1)
+        self.connector._get_alerts_payload(from_ingest_time=aware_start)
+        aware_end = create_alert_request.call_args.kwargs["ingest_time_end"]
+        self.assertIsNotNone(aware_end.tzinfo)
+        self.assertGreater(aware_end, aware_start)
+
+        naive_start = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=1)
+        self.connector._get_alerts_payload(from_ingest_time=naive_start)
+        naive_end = create_alert_request.call_args.kwargs["ingest_time_end"]
+        self.assertIsNone(naive_end.tzinfo)
+        self.assertGreater(naive_end, naive_start)
+
 
 class MultiValueToStringListTest(unittest.TestCase):
     def test_splits_on_pipe(self):
@@ -358,10 +408,21 @@ class MultiValueToStringListTest(unittest.TestCase):
         )
 
     def test_preserves_commas_inside_values(self):
-        # Names may legitimately contain commas; only the pipe separates values.
+        # Names may legitimately contain commas; when a pipe is present it wins.
         self.assertEqual(
             multi_value_to_string_list("Doe, John|Roe, Jane"),
             ["Doe, John", "Roe, Jane"],
+        )
+
+    def test_falls_back_to_comma_for_legacy_values(self):
+        # Assets and playbooks created before the pipe separator must keep working.
+        self.assertEqual(
+            multi_value_to_string_list("id1,id2,id3"),
+            ["id1", "id2", "id3"],
+        )
+        self.assertEqual(
+            multi_value_to_string_list("New, Closed"),
+            ["New", "Closed"],
         )
 
     def test_single_value_returns_single_item_list(self):

@@ -6,4 +6,6 @@
 * Declare support for Python 3.13 in addition to Python 3.9.
 * Fix scheduled polling failure by capping the alerted events count to a valid range.
 * Fix on poll failure when an ingested alert has no associated alerted events.
-* Use a pipe ("|") to separate multiple values in action and asset fields so names containing commas are preserved.
+* Fix close alert, update alert status and get alerted events reporting success when the action actually failed.
+* Fix the on poll ingest window being built from mixed timezone-aware and naive timestamps.
+* Support a pipe ("|") separator in multi-value action and asset fields so values containing commas are preserved. Comma-separated values remain supported.

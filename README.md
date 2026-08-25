@@ -32,7 +32,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **ingest_artifacts** | required | boolean | Should artifacts be ingested |
 **ingest_period** | required | string | Alert Retrieval Start (Days Ago) |
 **severity** | optional | string | Alert Severity |
-**threat_model** | optional | string | Threat Detection Policies. Pipe-separated ("|") |
+**threat_model** | optional | string | Threat Detection Policies. Pipe-separated ("|"); comma also supported |
 **alert_status** | optional | string | Alert Status |
 
 ### Supported Actions
@@ -70,15 +70,15 @@ Read only: **True**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**threat_model_name** | optional | List of requested threat models to retrieve. Pipe-separated ("|") | string | |
+**threat_model_name** | optional | List of requested threat models to retrieve. Pipe-separated ("|"); comma also supported | string | |
 **page** | optional | Page number (default 1) | numeric | |
 **max_results** | optional | The max number of alerts to retrieve (up to 50) | numeric | |
 **start_time** | optional | Start time of the range of alerts | string | |
 **end_time** | optional | End time of the range of alerts | string | |
-**alert_status** | optional | List of required alerts status. Pipe-separated ("|") | string | |
-**alert_severity** | optional | List of alerts severity. Pipe-separated ("|") | string | |
-**device_name** | optional | List of device names. Pipe-separated ("|") | string | |
-**user_name** | optional | List of user names. Pipe-separated ("|") | string | `user name` |
+**alert_status** | optional | List of required alerts status. Pipe-separated ("|"); comma also supported | string | |
+**alert_severity** | optional | List of alerts severity. Pipe-separated ("|"); comma also supported | string | |
+**device_name** | optional | List of device names. Pipe-separated ("|"); comma also supported | string | |
+**user_name** | optional | List of user names. Pipe-separated ("|"); comma also supported | string | `user name` |
 **last_days** | optional | Number of days you want the search to go back to | numeric | |
 **descending_order** | optional | Indicates whether alerts should be ordered in newest to oldest order | boolean | |
 
@@ -140,7 +140,7 @@ Read only: **False**
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **status** | required | Alert's new status | string | |
-**alert_id** | required | Array of alert IDs to be updated. Pipe-separated ("|") | string | `varonis alert id` |
+**alert_id** | required | Array of alert IDs to be updated. Pipe-separated ("|"); comma also supported | string | `varonis alert id` |
 
 #### Action Output
 
@@ -167,7 +167,7 @@ Read only: **False**
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **close_reason** | required | Alert's close reason | string | |
-**alert_id** | required | Array of alert IDs to be closed. Pipe-separated ("|") | string | `varonis alert id` |
+**alert_id** | required | Array of alert IDs to be closed. Pipe-separated ("|"); comma also supported | string | `varonis alert id` |
 
 #### Action Output
 
@@ -193,7 +193,7 @@ Read only: **True**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**alert_id** | required | List of alert IDs. Pipe-separated ("|") | string | `varonis alert id` |
+**alert_id** | required | List of alert IDs. Pipe-separated ("|"); comma also supported | string | `varonis alert id` |
 **page** | optional | Page number (default 1) | numeric | |
 **max_results** | optional | The max number of events to retrieve (up to 5k) | numeric | |
 **descending_order** | optional | Indicates whether events should be ordered in newest to oldest order | boolean | |

@@ -325,7 +325,11 @@ class VaronisSaasConnector(BaseConnector):
         """
         ingest_time_end = None
         if from_ingest_time:
-            ingest_time_end = datetime.now()
+            # Both ends of the ingest-time window must share the same awareness,
+            # otherwise the range is interpreted in different timezones.
+            ingest_time_end = datetime.now(timezone.utc)
+            if from_ingest_time.tzinfo is None:
+                ingest_time_end = ingest_time_end.replace(tzinfo=None)
 
         payload = create_alert_request(
             ingest_time_start=from_ingest_time,
@@ -555,7 +559,7 @@ class VaronisSaasConnector(BaseConnector):
             action_result.add_data(response)
         except Exception as ex:
             self.error_print("Exception occurred while updating alert status.", ex)
-            action_result.set_status(phantom.APP_ERROR, str(ex))
+            return action_result.set_status(phantom.APP_ERROR, str(ex))
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -593,7 +597,7 @@ class VaronisSaasConnector(BaseConnector):
             action_result.add_data(response)
         except Exception as ex:
             self.error_print("Exception occurred while closing alert.", ex)
-            action_result.set_status(phantom.APP_ERROR, str(ex))
+            return action_result.set_status(phantom.APP_ERROR, str(ex))
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -635,7 +639,7 @@ class VaronisSaasConnector(BaseConnector):
             action_result.update_summary({"events_count": len(results)})
         except Exception as ex:
             self.error_print("Exception occurred while getting alerted events.", ex)
-            action_result.set_status(phantom.APP_ERROR, str(ex))
+            return action_result.set_status(phantom.APP_ERROR, str(ex))
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -658,7 +662,13 @@ class VaronisSaasConnector(BaseConnector):
             container_count = param.get(phantom.APP_JSON_CONTAINER_COUNT, float("inf"))
             start_time = tools.numeric_to_date(ingest_period)
             artifact_count = param.get(phantom.APP_JSON_ARTIFACT_COUNT, VDSP_MAX_ALERTED_EVENTS)
-            artifact_count = min(tools.try_convert(artifact_count, int) or VDSP_MAX_ALERTED_EVENTS, VDSP_MAX_ALERTED_EVENTS)
+            # Clamp the requested artifact count to the valid range accepted by the
+            # search API. Missing, non-numeric and non-positive values (0 or negative)
+            # all fall back to the maximum.
+            artifact_count = tools.try_convert(artifact_count, int)
+            if artifact_count is None or artifact_count < 1:
+                artifact_count = VDSP_MAX_ALERTED_EVENTS
+            artifact_count = min(artifact_count, VDSP_MAX_ALERTED_EVENTS)
 
             # Cap the ingestion window so a single poll never covers more than
             # VDSP_MAX_INGEST_INTERVAL_DAYS, no matter how large the configured
