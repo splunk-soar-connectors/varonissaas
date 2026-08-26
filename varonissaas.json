@@ -7,7 +7,7 @@
     "logo": "logo_varonissaas.svg",
     "logo_dark": "logo_varonissaas_dark.svg",
     "product_name": "Varonis SaaS",
-    "python_version": "3",
+    "python_version": "3.9, 3.13",
     "product_version_regex": ".*",
     "publisher": "Varonis",
     "license": "Copyright (c) Varonis, 2024-2026",
@@ -63,7 +63,7 @@
             "order": 5
         },
         "threat_model": {
-            "description": "Threat Detection Policies",
+            "description": "Threat Detection Policies. Pipe-separated (\"|\"); comma also supported",
             "data_type": "string",
             "order": 6
         },
@@ -97,7 +97,7 @@
             "read_only": true,
             "parameters": {
                 "threat_model_name": {
-                    "description": "List of requested threat models to retrieve",
+                    "description": "List of requested threat models to retrieve. Pipe-separated (\"|\"); comma also supported",
                     "data_type": "string",
                     "order": 0
                 },
@@ -124,22 +124,22 @@
                     "order": 4
                 },
                 "alert_status": {
-                    "description": "List of required alerts status",
+                    "description": "List of required alerts status. Pipe-separated (\"|\"); comma also supported",
                     "data_type": "string",
                     "order": 5
                 },
                 "alert_severity": {
-                    "description": "List of alerts severity",
+                    "description": "List of alerts severity. Pipe-separated (\"|\"); comma also supported",
                     "data_type": "string",
                     "order": 6
                 },
                 "device_name": {
-                    "description": "List of device names",
+                    "description": "List of device names. Pipe-separated (\"|\"); comma also supported",
                     "data_type": "string",
                     "order": 7
                 },
                 "user_name": {
-                    "description": "List of user names",
+                    "description": "List of user names. Pipe-separated (\"|\"); comma also supported",
                     "data_type": "string",
                     "contains": [
                         "user name"
@@ -434,7 +434,7 @@
                     "order": 0
                 },
                 "alert_id": {
-                    "description": "Array of alert IDs to be updated",
+                    "description": "Array of alert IDs to be updated. Pipe-separated (\"|\"); comma also supported",
                     "data_type": "string",
                     "contains": [
                         "varonis alert id"
@@ -520,7 +520,7 @@
                     "order": 0
                 },
                 "alert_id": {
-                    "description": "Array of alert IDs to be closed",
+                    "description": "Array of alert IDs to be closed. Pipe-separated (\"|\"); comma also supported",
                     "data_type": "string",
                     "contains": [
                         "varonis alert id"
@@ -590,7 +590,7 @@
             "read_only": true,
             "parameters": {
                 "alert_id": {
-                    "description": "List of alert IDs",
+                    "description": "List of alert IDs. Pipe-separated (\"|\"); comma also supported",
                     "data_type": "string",
                     "contains": [
                         "varonis alert id"
@@ -933,7 +933,7 @@
             },
             {
                 "module": "pytz",
-                "input_file": "wheels/shared/pytz-2026.2-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/pytz-2026.3.post1-py2.py3-none-any.whl"
             },
             {
                 "module": "regex",
@@ -953,11 +953,11 @@
             },
             {
                 "module": "pytz",
-                "input_file": "wheels/shared/pytz-2026.2-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/pytz-2026.3.post1-py2.py3-none-any.whl"
             },
             {
                 "module": "regex",
-                "input_file": "wheels/py313/regex-2026.7.10-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+                "input_file": "wheels/py313/regex-2026.7.19-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
             },
             {
                 "module": "tzlocal",
